@@ -101,7 +101,7 @@
 
   --icon-sm: 1.125rem;
   --icon-md: 1.875rem;
-  --icon-disc: 3.875rem;   /* the circular icon well */
+  --icon-disc: 3.25rem;    /* the circular icon well; glyph is 54% of it */
 
   /* --- Accent gradients --------------------------------------------------- */
 

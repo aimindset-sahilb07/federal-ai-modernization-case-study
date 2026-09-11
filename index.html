@@ -148,6 +148,14 @@ a{ color:inherit; text-decoration:none }
   text-transform:uppercase; color: var(--ink-1);
 }
 .small{ font-size: var(--step-n1); color: var(--ink-3) }
+.section-title{
+  font-family: var(--font-serif); font-size: var(--step-3);
+  line-height:1.1; letter-spacing:-.02em; color: var(--ink-1); margin:0;
+  display:flex; align-items:center; gap: var(--space-s);
+}
+.section-title::after{
+  content:""; flex:1 1 auto; block-size:1px; background: var(--line);
+}
 .thesis{
   font-family: var(--font-serif); font-size: var(--step-4); line-height:1.16;
   letter-spacing:-.02em; text-align:center; margin-inline:auto; max-inline-size:34ch;
@@ -350,6 +358,7 @@ a{ color:inherit; text-decoration:none }
 .gov-card{
   padding: var(--space-m); border-radius: var(--radius);
   background: var(--surface-card); border: var(--border); box-shadow: var(--shadow-2);
+  --stack-space: var(--space-s);
 }
 
 /* --- narrow screens ------------------------------------------------------
@@ -670,8 +679,8 @@ a{ color:inherit; text-decoration:none }
       </div>
 
       <div class="stack reveal">
-        <p class="kicker">The pivot</p>
-        <div class="sidebar" style="--sidebar-width: 18rem; --sidebar-space: var(--space-s)">
+        <h3 class="section-title">The pivot</h3>
+        <div class="sidebar" style="--sidebar-width: 28rem; --sidebar-space: var(--space-s); align-items: flex-start">
           <div class="flow-panel stack" style="--stack-space: var(--space-xs)">
             <p class="kicker">Before</p>
             <div class="cluster" style="--cluster-space: var(--space-2xs)">
@@ -689,7 +698,7 @@ a{ color:inherit; text-decoration:none }
               <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step" data-tone="accent">Validation<br>harness</span></span>
               <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step" data-tone="accent">Compare<br>behavior</span></span>
               <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg>
-                <span class="human-review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>Review exceptions</span>
+                <span class="human-review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>Review<br>exceptions</span>
               </span>
               <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step">Promote</span></span>
             </div>

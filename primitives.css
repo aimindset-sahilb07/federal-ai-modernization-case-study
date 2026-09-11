@@ -7,6 +7,23 @@
 
 *,*::before,*::after{ box-sizing: border-box }
 
+/* --- KNOB CONTAINMENT ----------------------------------------------------
+   Custom properties inherit, so --stack-space set on one stack silently
+   became the spacing of every stack nested inside it: a 16px card gap
+   rendering at 54px.
+
+   Resetting the knob on children is not enough on its own, because some
+   primitives READ their knob on the child (a stack's margin, a sidebar's
+   basis). So each primitive first resolves its knob into a private --_*
+   value on itself, and the children read that. A nested primitive
+   re-resolves its own private value, so a knob applies to exactly one
+   level and nothing downstream inherits it by accident.                 */
+
+.cluster  > *{ --cluster-space: initial; --cluster-align: initial; --cluster-justify: initial }
+.grid     > *{ --grid-space: initial; --grid-min: initial }
+.with-icon> *{ --with-icon-space: initial; --with-icon-align: initial }
+.box      > *{ --box-space: initial }
+
 /* --- 1. STACK ------------------------------------------------------------
    Vertical rhythm. The ONLY thing that puts space between stacked blocks.
    Margins (not gap) so nested stacks and one-off exceptions still work.
@@ -15,9 +32,12 @@
    That replaces `height:100%`, which silently breaks inside a stretched
    grid item.                                                             */
 
-.stack{ display:flex; flex-direction:column; justify-content:flex-start }
-.stack > *{ margin-block:0 }
-.stack > * + *{ margin-block-start: var(--stack-space, var(--space-s)) }
+.stack{
+  --_stack: var(--stack-space, var(--space-s));
+  display:flex; flex-direction:column; justify-content:flex-start;
+}
+.stack > *{ margin-block:0; --stack-space: initial }
+.stack > * + *{ margin-block-start: var(--_stack) }
 .stack > [data-grow]{ flex-grow:1 }
 
 /* --- 2. CLUSTER ----------------------------------------------------------
@@ -36,19 +56,21 @@
    takes the rest and wraps underneath once it would go below
    --sidebar-content-min. No breakpoint required.                          */
 
-.sidebar{ display:flex; flex-wrap:wrap; gap: var(--sidebar-space, var(--space-l)) }
-.sidebar > :first-child{ flex-basis: var(--sidebar-width, 20rem); flex-grow:1; min-inline-size:0 }
-.sidebar > :last-child{
-  flex-basis:0; flex-grow:999;
-  min-inline-size: var(--sidebar-content-min, 50%);
+.sidebar{
+  --_sbw: var(--sidebar-width, 20rem);
+  --_sbmin: var(--sidebar-content-min, 50%);
+  display:flex; flex-wrap:wrap; gap: var(--sidebar-space, var(--space-l));
 }
+.sidebar > *{ --sidebar-width: initial; --sidebar-content-min: initial; --sidebar-space: initial }
+.sidebar > :first-child{ flex-basis: var(--_sbw); flex-grow:1; min-inline-size:0 }
+.sidebar > :last-child{ flex-basis:0; flex-grow:999; min-inline-size: var(--_sbmin) }
 /* [data-side="end"] puts the narrow column LAST while keeping the main copy
    first in the DOM, which is what reading order and screen readers want. */
 .sidebar[data-side="end"] > :first-child{
-  flex-basis:0; flex-grow:999; min-inline-size: var(--sidebar-content-min, 50%);
+  flex-basis:0; flex-grow:999; min-inline-size: var(--_sbmin);
 }
 .sidebar[data-side="end"] > :last-child{
-  flex-basis: var(--sidebar-width, 20rem); flex-grow:1; min-inline-size:0;
+  flex-basis: var(--_sbw); flex-grow:1; min-inline-size:0;
 }
 
 /* Without this a long unbreakable word sets min-content and the flex item
@@ -61,10 +83,13 @@
    N equal columns that switch to a single column all at once, when the
    container (not the viewport) drops below --switcher-threshold.          */
 
-.switcher{ display:flex; flex-wrap:wrap; gap: var(--switcher-space, var(--space-l)) }
+.switcher{
+  --_swt: var(--switcher-threshold, 40rem);
+  display:flex; flex-wrap:wrap; gap: var(--switcher-space, var(--space-l));
+}
 .switcher > *{
-  flex-grow:1;
-  flex-basis: calc((var(--switcher-threshold, 40rem) - 100%) * 999);
+  --switcher-threshold: initial; --switcher-space: initial;
+  flex-grow:1; flex-basis: calc((var(--_swt) - 100%) * 999);
 }
 
 /* --- 5. CENTER -----------------------------------------------------------
@@ -143,6 +168,13 @@
 }
 .with-icon > :first-child{ flex:0 0 auto }
 
+/* A connector plus the step it points at, as one unit. Wrapping moves the
+   arrow with its step instead of leaving it dangling.                    */
+.flow-item{
+  display:inline-flex; align-items:center;
+  gap: var(--flow-item-space, var(--space-2xs)); min-inline-size:0;
+}
+
 /* Icons are ALWAYS inline SVG on this contract. Never a text glyph, never
    an emoji: those ignore stroke weight and render differently per OS.     */
 
@@ -173,9 +205,10 @@
   fill:none; stroke:currentColor;
   stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;
 }
-/* Same safety net for the larger disc. */
+/* The glyph is sized as a share of its disc, so changing --icon-disc can
+   never leave a small icon floating in a large circle.                   */
 .icon-disc > svg{
-  inline-size: var(--icon-md); block-size: var(--icon-md);
+  inline-size:54%; block-size:54%;
   fill:none; stroke:currentColor;
   stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
 }

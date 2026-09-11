@@ -55,6 +55,25 @@ function designLint(){
     px.length ? fail(`${f}: ${px.length} off-scale size(s): ${[...new Set(px)].join(' ')}`)
               : pass(`${f}: no off-scale sizes`);
   }
+
+  // A class in the markup with no rule anywhere is silent: the element just
+  // renders unstyled. This is how a row of arrows ends up stacked, and how
+  // ten icons render as nothing. Cheapest check in the file.
+  const htmlFiles = readdirSync(dir).filter(f => f.endsWith('.html'));
+  const allCss = readdirSync(dir).filter(f => f.endsWith('.css'))
+    .map(f => readFileSync(join(dir, f), 'utf8')).join('\n');
+  for (const f of htmlFiles){
+    const src = readFileSync(join(dir, f), 'utf8');
+    const styleBlocks = [...src.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map(m => m[1]).join('\n');
+    const defined = new Set(
+      [...(allCss + styleBlocks).matchAll(/\.(-?[A-Za-z_][A-Za-z0-9_-]*)/g)].map(m => m[1])
+    );
+    const used = new Set();
+    for (const m of src.matchAll(/class="([^"]+)"/g)) m[1].split(/\s+/).forEach(c => c && used.add(c));
+    const orphans = [...used].filter(c => !defined.has(c));
+    orphans.length ? fail(`${f}: ${orphans.length} class(es) used but never defined: ${orphans.join(' ')}`)
+                   : pass(`${f}: every class is defined`);
+  }
 }
 
 /* --------------------------------------------------------------------------
