@@ -1,0 +1,145 @@
+/* ==========================================================================
+   TOKENS — the closed set.
+   This is the ONLY file allowed to contain a raw colour, size or shadow.
+   Everything downstream references a var(). check.mjs enforces it.
+   Fluid scales generated for a 380px -> 1360px viewport range.
+   ========================================================================== */
+
+:root{
+
+  /* --- Type scale -------------------------------------------------------
+     1.15 at small sizes, 1.25 (major third) at large. The small-end
+     ratio is deliberately gentle so a hero headline still fits a 400px
+     screen without breaking mid-word.
+     Use --step-n1 for fine print, --step-8 for a hero. Nothing in between
+     that is not on this list.                                            */
+
+  --step-n1: clamp(0.8696rem, 0.8578rem + 0.04969vw, 0.9rem);    /*  13 -> 14 */
+  --step-0:  clamp(1rem, 0.9515rem + 0.2041vw, 1.125rem);       /*  16 -> 18 */
+  --step-1:  clamp(1.15rem, 1.051rem + 0.4184vw, 1.406rem);       /*  19 -> 22 */
+  --step-2:  clamp(1.322rem, 1.154rem + 0.7107vw, 1.758rem);     /*  23 -> 28 */
+  --step-3:  clamp(1.521rem, 1.259rem + 1.104vw, 2.197rem);    /*  28 -> 35 */
+  --step-4:  clamp(1.749rem, 1.362rem + 1.629vw, 2.747rem);     /*  33 -> 44 */
+  --step-5:  clamp(2.011rem, 1.46rem + 2.321vw, 3.433rem);     /*  40 -> 55 */
+  --step-6:  clamp(2.313rem, 1.546rem + 3.23vw, 4.292rem);      /*  48 -> 69 */
+  --step-7:  clamp(2.66rem, 1.611rem + 4.415vw, 5.364rem);     /*  57 -> 86 */
+  --step-8:  clamp(3.059rem, 1.645rem + 5.953vw, 6.706rem);       /*  69 -> 107 */
+
+  /* --- Space scale ------------------------------------------------------
+     One ratio, t-shirt named. Every margin, padding and gap uses one of
+     these nine. No exceptions, no one-off pixel values.                  */
+
+  --space-3xs: clamp(0.25rem, 0.2379rem + 0.051vw, 0.2812rem);  /*   4 */
+  --space-2xs: clamp(0.5rem, 0.4758rem + 0.102vw, 0.5625rem);   /*   8 */
+  --space-xs:  clamp(0.75rem, 0.7136rem + 0.1531vw, 0.8438rem); /*  12 */
+  --space-s:   clamp(1rem, 0.9515rem + 0.2041vw, 1.125rem);     /*  16 */
+  --space-m:   clamp(1.5rem, 1.427rem + 0.3061vw, 1.688rem);    /*  24 */
+  --space-l:   clamp(2rem, 1.903rem + 0.4082vw, 2.25rem);       /*  32 */
+  --space-xl:  clamp(3rem, 2.855rem + 0.6122vw, 3.375rem);      /*  48 */
+  --space-2xl: clamp(4rem, 3.806rem + 0.8163vw, 4.5rem);        /*  64 */
+  --space-3xl: clamp(6rem, 5.709rem + 1.224vw, 6.75rem);        /*  96 */
+
+  /* --- Ink --------------------------------------------------------------
+     Five values. If a grey is not one of these, it does not exist.
+     Contrast on --surface, smallest intended size:
+       ink-1 15.6:1   ink-2 10.4:1   ink-3 7.0:1   ink-4 4.6:1
+       ink-5 3.4:1  <- large text only (>=24px), never body copy         */
+
+  --ink-1: #10233c;
+  --ink-2: #2b3a4e;
+  --ink-3: #4a5769;
+  --ink-4: #5f6975;
+  --ink-5: #78828f;
+
+  /* --- Surface ---------------------------------------------------------- */
+
+  --surface:     #f7f5f0;
+  --surface-2:   #eef2f6;
+  --surface-card: rgba(255,255,255,.76);
+
+  /* --- Accent -----------------------------------------------------------
+     One accent. A second accent is a design decision, not a token edit.  */
+
+  --accent:      #1263ff;
+  --accent-ink:  #0a49c4;   /* accent text on light, 4.6:1 */
+  --accent-soft: #eff5ff;
+  --accent-line: #c3d8ff;
+  --on-accent:   #ffffff;
+
+  /* --- Line -------------------------------------------------------------- */
+
+  --line:   #d7dce3;
+  --line-2: #c9d0d9;
+
+  /* --- Radius, shadow, border ------------------------------------------- */
+
+  --radius:    8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  --shadow-1: 0 1px 2px rgba(23,38,58,.05);
+  --shadow-2: 0 12px 32px rgba(23,38,58,.06);
+
+  --border: 1px solid var(--line);
+
+  /* --- Type families and weights ---------------------------------------- */
+
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono:  ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono',
+                'Courier New', monospace;
+
+  /* --- Measure and layout ------------------------------------------------ */
+
+  --measure: 65ch;        /* readable line length */
+  --max:     1360px;      /* page gutter width */
+  --gutter:  clamp(1.25rem, 0.5714rem + 2.857vw, 3rem);   /* 20 -> 48 */
+
+  /* --- Icon sizes --------------------------------------------------------
+     Named so an icon and the track that holds it can never disagree.     */
+
+  --icon-sm: 1.125rem;
+  --icon-md: 1.875rem;
+  --icon-disc: 3.875rem;   /* the circular icon well */
+
+  /* --- Accent gradients --------------------------------------------------- */
+
+  --accent-deep:  #0d3e8d;
+  --accent-mid:   #0755ca;
+  --accent-bright:#0c64ff;
+  --accent-lift:  #4b8bff;   /* 3.3:1 on white — decorative / large text only */
+
+  /* --- Scene art ----------------------------------------------------------
+     The decorative landscape behind each chapter. Named so the art cannot
+     drift away from the palette. Purely decorative, always aria-hidden.   */
+
+  --art-sky-1:   #faf9f6;
+  --art-sky-2:   #f7f5f0;
+  --art-sky-3:   #eef2f6;
+  --art-glow:    rgba(255,255,255,.92);
+  --art-ridge-far-1:  rgba(238,243,247,.2);
+  --art-ridge-far-2:  rgba(203,214,226,.65);
+  --art-ridge-near-1: rgba(217,226,234,.4);
+  --art-ridge-near-2: rgba(236,240,243,.75);
+  --art-structure-1:  #e2e5e7;
+  --art-structure-2:  #fafafa;
+  --art-structure-3:  #cfd4d8;
+  --art-structure-edge:   rgba(113,126,142,.18);
+  --art-structure-fin-1:  rgba(255,255,255,.65);
+  --art-structure-fin-2:  rgba(142,153,164,.18);
+  --art-structure-shadow: rgba(40,53,67,.08);
+  --art-halo:    rgba(202,220,246,.55);
+  --art-blur:    8px;
+  --art-fin-shadow: 16px 0 26px var(--art-structure-shadow);
+  --tick:        7px;   /* the small rotated square used as an arrow head */
+
+  /* --- Motion ------------------------------------------------------------ */
+
+  --ease: cubic-bezier(.2,.6,.2,1);
+  --dur:  .5s;
+}
+
+@media (prefers-reduced-motion: reduce){
+  :root{ --dur: 0.01ms; }
+}

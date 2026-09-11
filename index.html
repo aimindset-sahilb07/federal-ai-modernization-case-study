@@ -5,640 +5,777 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Federal Benefits Modernization — AI-Accelerated Migration</title>
 <meta name="description" content="A five-chapter case study on AI-accelerated legacy modernization in a regulated federal environment." />
-<script>document.documentElement.className += ' js';</script>
+<script>document.documentElement.className += ' js'</script>
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="primitives.css" />
 <style>
-:root{
-  /* surface */
-  --paper:#f7f5f0;
-  --paper-2:#efede7;
-  --white-card:rgba(255,255,255,.76);
+/* ==========================================================================
+   COMPOSITION — page-specific only. Tokens and primitives, nothing raw.
+   ========================================================================== */
 
-  /* ink scale */
-  --ink-900:#10233c;   /* display + headings */
-  --ink-700:#2b3a4e;   /* lead paragraphs */
-  --ink-500:#4a5769;   /* body copy */
-  --ink-400:#64707f;   /* meta, captions */
-  --ink-300:#767e88;   /* large display gray only */
-
-  /* line */
-  --line:#d7dce3;
-  --line-2:#c9d0d9;
-
-  /* accent */
-  --blue:#1263ff;
-  --blue-soft:#eff5ff;
-  --blue-line:#c3d8ff;
-
-  /* rhythm: 4px base */
-  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
-  --s6:32px; --s7:48px; --s8:64px;
-
-  --icon:62px;
-  --navH:72px;
-  --max:1360px;
-  --serif: Georgia, 'Times New Roman', serif;
-  --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', 'Courier New', monospace;
+html{ scroll-behavior:smooth; scroll-padding-block-start: var(--space-3xl) }
+body{
+  margin:0; background: var(--surface); color: var(--ink-1);
+  font-family: var(--font-sans); font-size: var(--step-0); line-height:1.5;
+  overflow-x:hidden;
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-snap-type:y proximity;scroll-padding-top:var(--navH);background:var(--paper);color:var(--ink-900)}
-body{margin:0;background:var(--paper);font-family:var(--sans);color:var(--ink-900);overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button{font:inherit}
+a{ color:inherit; text-decoration:none }
 
-/* focus */
-:where(a,button,[tabindex]):focus-visible{
-  outline:2px solid var(--blue);outline-offset:3px;border-radius:3px;
-}
+/* --- nav ---------------------------------------------------------------- */
 
-/* ===== Global navigation ===== */
 .site-nav{
-  position:fixed;z-index:100;top:0;left:0;right:0;height:var(--navH);
-  display:flex;align-items:center;
-  background:linear-gradient(to bottom,rgba(247,245,240,.97) 0%,rgba(247,245,240,.93) 62%,rgba(247,245,240,.72) 88%,rgba(247,245,240,0) 100%);
-  padding:0 4.5vw;
+  position:fixed; inset-block-start:0; inset-inline:0; z-index:10;
+  padding-block: var(--space-xs);
+  background: linear-gradient(to bottom,
+    var(--surface) 0%, var(--surface) 58%, transparent 100%);
 }
-.nav-inner{width:min(var(--max),100%);margin:auto;display:flex;align-items:center;gap:var(--s6)}
-.brand{display:flex;align-items:center;gap:var(--s4);min-width:260px}
-.brand-mark{font:600 15px/1 var(--mono);letter-spacing:.22em;color:var(--ink-900)}
-.brand-rule{width:1px;height:20px;background:var(--line-2)}
-.brand-copy{font:600 11px/1 var(--mono);letter-spacing:.17em;color:var(--ink-400)}
-.chapter-nav{margin-left:auto;display:flex;gap:var(--s6);align-items:center}
-.chapter-nav a{position:relative;font:600 11px/1 var(--mono);letter-spacing:.08em;color:var(--ink-400);padding:11px 0;white-space:nowrap;transition:color .2s ease}
-.chapter-nav a::after{content:"";position:absolute;left:0;right:100%;bottom:3px;height:2px;background:var(--blue);transition:right .25s ease}
-.chapter-nav a:hover{color:var(--ink-900)}
-.chapter-nav a:hover::after{right:0;background:var(--line-2)}
-.chapter-nav a.active{color:var(--blue)}
-.chapter-nav a.active::after{right:0;background:var(--blue)}
-
-main{position:relative}
-.chapter{
-  min-height:100svh;
-  scroll-snap-align:start;
-  position:relative;
-  display:flex;
-  align-items:center;
-  overflow:clip;
-  padding:calc(var(--navH) + var(--s6)) 4.5vw var(--s7);
-  isolation:isolate;
+.nav-mark{ font:600 var(--step-0)/1 var(--font-serif); letter-spacing:.18em }
+.nav-rule{ inline-size:1px; block-size: var(--space-s); background: var(--line-2) }
+.nav-copy{
+  font:600 var(--step-n1)/1 var(--font-mono); letter-spacing:.17em;
+  color: var(--ink-4); text-transform:uppercase;
 }
-.chapter-inner{position:relative;z-index:3;width:min(var(--max),100%);margin:auto}
-.chapter-label{font:700 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:var(--s5);display:flex;align-items:center;gap:var(--s3)}
-.chapter-label::after{content:"";width:var(--s7);height:2px;background:var(--blue)}
-.display{font-family:var(--serif);font-weight:400;letter-spacing:-.045em;line-height:.92;margin:0;color:var(--ink-900)}
-.display.prose{line-height:1.02;letter-spacing:-.035em}
-.body-lg{font-size:clamp(16px,1.25vw,20px);line-height:1.5;color:var(--ink-700)}
-.kicker{font:700 11px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-400);margin-bottom:var(--s3)}
-.pull{font-family:var(--serif);font-style:italic;letter-spacing:-.02em}
-.card{
-  background:var(--white-card);
-  border:1px solid rgba(111,130,155,.22);
-  box-shadow:0 12px 32px rgba(23,38,58,.045);
-  border-radius:8px;
+.site-nav [data-nav-links]{ flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none }
+.site-nav [data-nav-links]::-webkit-scrollbar{ display:none }
+.nav-link{
+  font:600 var(--step-n1)/1 var(--font-mono); letter-spacing:.08em;
+  white-space:nowrap; flex:0 0 auto; color: var(--ink-4);
+  padding-block: var(--space-2xs); border-block-end:2px solid transparent;
+  transition: color .2s var(--ease), border-color .2s var(--ease);
+}
+.nav-link:hover{ color: var(--ink-1); border-block-end-color: var(--line-2) }
+.nav-link[aria-current="true"]{ color: var(--accent-ink); border-block-end-color: var(--accent) }
+
+/* --- chapter shell ------------------------------------------------------- */
+
+.chapter{ --cover-space: var(--space-2xl); position:relative; isolation:isolate }
+.chapter:first-of-type{ --cover-space: var(--space-3xl) }
+.chapter-inner{ --center-max: var(--max); position:relative; z-index:1 }
+
+/* --- scene art (decorative, aria-hidden) --------------------------------- */
+
+.scene-art{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden }
+.scene-art .wash{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(80% 70% at 58% 18%, var(--art-glow), transparent 68%),
+    linear-gradient(180deg, var(--art-sky-1) 0%, var(--art-sky-2) 68%, var(--art-sky-3) 100%);
+}
+.scene-art .ridge{
+  position:absolute; inset-inline:-4%; inset-block-end:-1%; block-size:30%; opacity:.52;
+  background: linear-gradient(180deg, var(--art-ridge-far-1), var(--art-ridge-far-2));
+  clip-path: polygon(0 58%,8% 45%,16% 57%,23% 31%,31% 60%,40% 42%,48% 64%,57% 44%,66% 60%,76% 38%,84% 56%,92% 43%,100% 61%,100% 100%,0 100%);
+}
+.scene-art .ridge::after{
+  content:""; position:absolute; inset:28% 0 0;
+  background: linear-gradient(180deg, var(--art-ridge-near-1), var(--art-ridge-near-2));
+  clip-path: polygon(0 56%,11% 42%,23% 69%,38% 46%,53% 66%,69% 42%,83% 64%,100% 47%,100% 100%,0 100%);
+}
+.scene-art .structure{
+  position:absolute; inset-block-start:0; inset-inline-end:-2vw;
+  inline-size:24vw; block-size:82%; opacity:.72;
+  background: linear-gradient(145deg, var(--art-structure-1) 0%, var(--art-structure-2) 42%, var(--art-structure-3) 100%);
+  clip-path: polygon(45% 0,100% 0,100% 100%,0 100%,22% 59%);
+  border-inline-start:1px solid var(--art-structure-edge);
+}
+.scene-art .structure::after{
+  content:""; position:absolute; inset-inline-start:28%; inset-block-start:9%;
+  inline-size:9%; block-size:78%;
+  background: linear-gradient(180deg, var(--art-structure-fin-1), var(--art-structure-fin-2));
+  box-shadow: var(--art-fin-shadow);
+}
+.scene-art .halo{
+  position:absolute; inset-inline-end:13vw; inset-block-end:16%;
+  inline-size: var(--space-3xl); block-size: var(--space-3xl); border-radius: var(--radius-pill);
+  background: radial-gradient(circle, var(--art-halo), transparent 66%);
+  filter: blur(var(--art-blur));
+}
+#challenge .structure{ inset-inline:-2vw auto; inline-size:20vw; block-size:70%; transform:scaleX(-1); opacity:.55 }
+#challenge .ridge{ block-size:24%; opacity:.4 }
+#challenge .halo{ inset-inline:18vw auto; inset-block-end:30% }
+#approach .structure{ inline-size:17vw; block-size:96%; opacity:.5 }
+#approach .ridge{ block-size:38%; opacity:.32 }
+#approach .halo{ inset-inline-end:38vw; inset-block-end:6% }
+#pivot .structure{ inline-size:30vw; block-size:58%; inset-block:auto 0; opacity:.42 }
+#pivot .ridge{ block-size:20%; opacity:.55 }
+#pivot .halo{ inset-inline-end:6vw; inset-block-end:52% }
+#governance .structure{ inline-size:14vw; opacity:.34 }
+#governance .ridge{ block-size:44%; opacity:.6 }
+#governance .halo{ inset-inline:30vw auto; inset-block-end:22% }
+
+.scroll-cue{
+  position:absolute; inset-inline-start: var(--gutter); inset-block-end: var(--space-m); z-index:2;
+  font:700 var(--step-n1)/1 var(--font-mono); letter-spacing:.14em;
+  text-transform:uppercase; color: var(--ink-3);
+}
+.scroll-cue .shaft{
+  display:block; margin-inline:auto; margin-block-start: var(--space-2xs);
+  inline-size:1px; block-size: var(--space-l); background: var(--ink-3); position:relative;
+}
+.scroll-cue .shaft::after{
+  content:""; position:absolute; inset-block-end:-1px; inset-inline-start:calc(var(--tick) / -2);
+  inline-size: var(--tick); block-size: var(--tick);
+  border-inline-end:1px solid var(--ink-3); border-block-end:1px solid var(--ink-3);
+  transform:rotate(45deg);
+}
+#scale .scroll-cue{ display:none }
+
+/* --- type roles ---------------------------------------------------------- */
+
+.eyebrow{
+  font:700 var(--step-n1)/1 var(--font-mono); letter-spacing:.14em;
+  text-transform:uppercase; color: var(--accent-ink);
+  display:flex; align-items:center; gap: var(--space-xs);
+}
+.eyebrow::after{ content:""; inline-size: var(--space-xl); block-size:2px; background: var(--accent) }
+.display{
+  font-family: var(--font-serif); font-weight:400; font-size: var(--step-7);
+  line-height:1.02; letter-spacing:-.03em; margin:0; overflow-wrap:break-word;
+}
+.display[data-size="hero"]{ font-size: var(--step-8) }
+.display[data-size="prose"]{ font-size: var(--step-6); line-height:1.08 }
+.lead{ font-size: var(--step-1); line-height:1.5; color: var(--ink-2) }
+.subhead{
+  font-family: var(--font-serif); font-size: var(--step-5);
+  line-height:1.04; letter-spacing:-.03em; color: var(--ink-5); margin:0;
+}
+.kicker{
+  font:700 var(--step-n1)/1.2 var(--font-mono); letter-spacing:.12em;
+  text-transform:uppercase; color: var(--ink-4);
+}
+.label{
+  font:700 var(--step-n1)/1.2 var(--font-mono); letter-spacing:.08em;
+  text-transform:uppercase; color: var(--ink-1);
+}
+.small{ font-size: var(--step-n1); color: var(--ink-3) }
+.thesis{
+  font-family: var(--font-serif); font-size: var(--step-4); line-height:1.16;
+  letter-spacing:-.02em; text-align:center; margin-inline:auto; max-inline-size:34ch;
+}
+.thesis[data-style="italic"]{ font-style:italic }
+.thesis span{ display:block; color: var(--ink-5) }
+
+/* --- 01 scale ------------------------------------------------------------ */
+
+.meta-item{
+  border-block-start: var(--border); padding-block-start: var(--space-xs);
+  padding-inline-end: var(--space-m); flex:1 1 8rem;
+}
+.flow-box{
+  inline-size:100%; padding: var(--space-s) var(--space-m);
+  border-radius: var(--radius); background: var(--surface-card);
+  border: var(--border); box-shadow: var(--shadow-2);
+}
+.flow-box .small{ font-family: var(--font-mono); letter-spacing:.04em; text-transform:uppercase }
+.flow-arrow{
+  inline-size:1px; block-size: var(--space-m); background: var(--accent);
+  margin-inline:auto; position:relative;
+}
+.flow-arrow::after{
+  content:""; position:absolute; inset-block-end:-2px; inset-inline-start:calc(var(--tick) / -2);
+  inline-size: var(--tick); block-size: var(--tick);
+  border-inline-end:1px solid var(--accent); border-block-end:1px solid var(--accent);
+  transform:rotate(45deg);
+}
+.ai-box{
+  inline-size:100%; padding: var(--space-m); border-radius: var(--radius-lg);
+  color: var(--on-accent);
+  background: linear-gradient(145deg, var(--accent-deep), var(--accent-mid) 42%, var(--accent-bright));
+  box-shadow: var(--shadow-2);
+}
+.ai-box .label, .ai-box .small{ color: var(--on-accent) }
+.ai-cell{ padding-inline: var(--space-xs); text-align:center }
+.metrics-band{
+  border-block-start: var(--border);
+  background: linear-gradient(180deg, var(--art-glow), transparent);
+  padding-block: var(--space-xl);
+}
+.metric-num{
+  font-family: var(--font-serif); font-size: var(--step-6); line-height:1;
+  letter-spacing:-.04em; color: var(--ink-1);
+}
+.metric-unit{
+  font:700 var(--step-n1)/1 var(--font-mono); letter-spacing:.1em;
+  color: var(--ink-4); margin-inline-start: var(--space-3xs);
+}
+.metric-label{
+  font:700 var(--step-n1)/1.2 var(--font-mono); letter-spacing:.09em;
+  text-transform:uppercase; border-block-start:2px solid var(--accent);
+  padding-block-start: var(--space-2xs); display:inline-block;
 }
 
-/* ===== abstract environment ===== */
-.scene-art{position:absolute;inset:0;z-index:0;pointer-events:none}
-.scene-art .wash{position:absolute;inset:0;background:
-  radial-gradient(80% 70% at 58% 18%,rgba(255,255,255,.92),rgba(255,255,255,0) 68%),
-  linear-gradient(180deg,#faf9f6 0%,#f7f5f0 68%,#eef2f6 100%)}
-.scene-art .mountains{position:absolute;left:-4%;right:-4%;bottom:-1%;height:30%;opacity:.52;background:
-  linear-gradient(180deg,rgba(238,243,247,.2),rgba(203,214,226,.65));
-  clip-path:polygon(0 58%,8% 45%,16% 57%,23% 31%,31% 60%,40% 42%,48% 64%,57% 44%,66% 60%,76% 38%,84% 56%,92% 43%,100% 61%,100% 100%,0 100%)}
-.scene-art .mountains::after{content:"";position:absolute;inset:28% 0 0;background:linear-gradient(180deg,rgba(217,226,234,.4),rgba(236,240,243,.75));clip-path:polygon(0 56%,11% 42%,23% 69%,38% 46%,53% 66%,69% 42%,83% 64%,100% 47%,100% 100%,0 100%)}
-.scene-art .structure{position:absolute;top:0;right:-2vw;width:24vw;height:82%;background:linear-gradient(145deg,#e2e5e7 0%,#fafafa 42%,#cfd4d8 100%);clip-path:polygon(45% 0,100% 0,100% 100%,0 100%,22% 59%);opacity:.72;border-left:1px solid rgba(113,126,142,.18)}
-.scene-art .structure::after{content:"";position:absolute;left:28%;top:9%;width:9%;height:78%;background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(142,153,164,.18));box-shadow:16px 0 26px rgba(40,53,67,.08)}
-.scene-art .sun{position:absolute;right:13vw;bottom:16%;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(202,220,246,.55),rgba(202,220,246,0) 66%);filter:blur(8px)}
+/* --- 02 challenge: flywheel ---------------------------------------------- */
 
-/* per-chapter variation so five frames read as progression, not a template */
-#challenge .scene-art .structure{right:auto;left:-2vw;width:20vw;height:70%;transform:scaleX(-1);opacity:.55}
-#challenge .scene-art .mountains{height:24%;opacity:.4}
-#challenge .scene-art .sun{right:auto;left:18vw;bottom:30%;width:200px;height:200px}
-#approach .scene-art .structure{width:17vw;height:96%;opacity:.5}
-#approach .scene-art .mountains{height:38%;opacity:.32}
-#approach .scene-art .sun{right:38vw;bottom:6%;width:260px;height:260px}
-#pivot .scene-art .structure{width:30vw;height:58%;top:auto;bottom:0;opacity:.42}
-#pivot .scene-art .mountains{height:20%;opacity:.55}
-#pivot .scene-art .sun{right:6vw;bottom:52%;width:120px;height:120px}
-#governance .scene-art .structure{width:14vw;opacity:.34}
-#governance .scene-art .mountains{height:44%;opacity:.6}
-#governance .scene-art .sun{right:auto;left:30vw;bottom:22%;width:320px;height:320px}
+.flywheel{ position:relative; aspect-ratio:720/590; inline-size:100%; align-self:center }
+.flywheel-svg{ position:absolute; inset:0; inline-size:100%; block-size:100%; overflow:visible }
+.flywheel-svg path{
+  fill:none; stroke: var(--accent); stroke-width:2; stroke-linecap:round; opacity:.85;
+}
+.flywheel-center{
+  position:absolute; inset-inline-start:50%; inset-block-start:50%;
+  transform:translate(-50%,-50%); text-align:center;
+}
+.flywheel-center .big{
+  font:700 var(--step-3)/1.05 var(--font-mono); letter-spacing:.04em;
+  margin-block-start: var(--space-2xs); color: var(--ink-1);
+}
+.fly-node{
+  position:absolute; inline-size:31%; min-inline-size:11rem;
+  padding: var(--space-s); border-radius: var(--radius);
+  background: var(--surface-card); border:1px solid var(--line-2);
+  box-shadow: var(--shadow-2);
+}
+.fly-node .label{ display:block; margin-block-end: var(--space-3xs) }
+.fly-node .small{ display:block; line-height:1.35 }
+.fly-node{ --with-icon-space: var(--space-2xs) }
+.fly-node.n1{ inset-inline-start:50%; inset-block-start:0; transform:translateX(-50%) }
+.fly-node.n2{ inset-inline-end:0; inset-block-start:26% }
+.fly-node.n3{ inset-inline-end:0; inset-block-end:14% }
+.fly-node.n4{ inset-inline-start:50%; inset-block-end:0; transform:translateX(-50%) }
+.fly-node.n5{ inset-inline-start:0; inset-block-end:14% }
+.fly-node.n6{ inset-inline-start:0; inset-block-start:26% }
 
-.scroll-cue{position:absolute;left:4.5vw;bottom:var(--s5);z-index:5;font:700 10px/1 var(--mono);letter-spacing:.14em;color:var(--ink-500);text-transform:uppercase;display:flex;flex-direction:column;gap:var(--s2);align-items:center}
-.scroll-cue .shaft{height:42px;width:1px;background:var(--ink-500);position:relative}
-.scroll-cue .shaft::after{content:"";position:absolute;bottom:-1px;left:-4px;width:7px;height:7px;border-right:1px solid var(--ink-500);border-bottom:1px solid var(--ink-500);transform:rotate(45deg)}
+/* --- 03 approach --------------------------------------------------------- */
 
-/* shared icon system */
-.icon-disc{width:var(--icon);height:var(--icon);border-radius:50%;background:#edf1f5;display:grid;place-items:center;color:var(--blue);flex:0 0 auto}
-.icon-disc svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.bullet-icon{width:30px;height:30px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;flex:0 0 auto}
-.bullet-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.chev{width:18px;height:18px;flex:0 0 auto;stroke:var(--ink-400);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.note{ border-inline-start:2px solid var(--accent); padding-inline-start: var(--space-s) }
+.stage-num{
+  inline-size: var(--space-xl); block-size: var(--space-xl);
+  border-radius: var(--radius-pill); border:1px solid var(--accent-line);
+  background: var(--accent-soft); color: var(--accent-ink);
+  display:grid; place-items:center; margin-inline:auto;
+  font:700 var(--step-1)/1 var(--font-mono);
+}
+.stage h3, .stage .small{ text-align:center }
+.stage-card{
+  padding: var(--space-m); border-radius: var(--radius);
+  background: var(--surface-card); border: var(--border); box-shadow: var(--shadow-2);
+}
+.mini-chip{
+  padding: var(--space-xs) var(--space-2xs); border:1px solid var(--accent-line);
+  border-radius: var(--radius); text-align:center; background: var(--accent-soft);
+  color: var(--ink-2); font-size: var(--step-n1); line-height:1.2; flex:1 1 5rem;
+}
+.transform-arrow{ display:grid; place-items:center; color: var(--ink-4) }
+.llm-block{
+  padding: var(--space-s); border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--accent-mid), var(--accent-bright));
+  color: var(--on-accent); text-align:center;
+  font:700 var(--step-n1)/1.3 var(--font-mono); letter-spacing:.07em; text-transform:uppercase;
+  box-shadow: var(--shadow-2);
+  display:grid; place-items:center;
+}
+.rung{
+  padding: var(--space-xs); border: var(--border); border-radius: var(--radius);
+  background: var(--surface-2);
+  font:700 var(--step-n1)/1 var(--font-mono); letter-spacing:.04em;
+  text-transform:uppercase; color: var(--ink-2);
+}
 
-/* ===== 01 SCALE ===== */
-#scale{padding-bottom:0}
-#scale .scroll-cue{display:none}
-.hero-top{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(390px,.98fr);gap:5vw;align-items:center;padding-bottom:var(--s5)}
-.hero-copy h1{font-size:clamp(64px,6.7vw,112px);max-width:760px}
-.hero-copy .body-lg{max-width:710px;margin:var(--s6) 0}
-.meta-row{display:grid;grid-template-columns:repeat(4,1fr);max-width:760px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.meta-item{padding:var(--s4) var(--s4) var(--s4) 0;min-height:66px}
-.meta-item+.meta-item{border-left:1px solid var(--line);padding-left:var(--s4)}
-.meta-item .meta-title{font:600 11px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-400);margin-bottom:var(--s1)}
-.meta-item .meta-value{font-size:13px;line-height:1.3;color:var(--ink-700)}
+/* --- 04 pivot ------------------------------------------------------------ */
 
-.legacy-flow{width:min(520px,100%);justify-self:center;display:grid;place-items:center;gap:var(--s3);position:relative}
-.flow-box{width:260px;padding:var(--s4) var(--s5);border-radius:8px;text-align:left;background:rgba(248,249,250,.78);border:1px solid var(--line-2);box-shadow:0 8px 24px rgba(40,52,67,.05)}
-.flow-box .title{font:700 12px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--s3);color:var(--ink-900)}
-.flow-box ul{list-style:none;padding:0;margin:0;display:grid;gap:var(--s2);font:600 12px/1.2 var(--mono);letter-spacing:.04em;color:var(--ink-500)}
-.flow-arrow{width:1px;height:var(--s5);background:var(--blue);position:relative}
-.flow-arrow::after{content:"";position:absolute;bottom:-2px;left:-4px;width:7px;height:7px;border-right:1px solid var(--blue);border-bottom:1px solid var(--blue);transform:rotate(45deg)}
-.ai-box{width:min(440px,100%);padding:var(--s5);border-radius:12px;color:#fff;background:linear-gradient(145deg,#0d3e8d,#0755ca 42%,#0c64ff);box-shadow:0 15px 38px rgba(18,99,255,.25), inset 0 0 0 1px rgba(255,255,255,.15)}
-.ai-title{text-align:center;font:700 12px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:var(--s4)}
-.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.23);padding-top:var(--s4)}
-.ai-grid div{padding:0 var(--s3);text-align:center;font-size:12px;line-height:1.35;color:rgba(255,255,255,.86)}
-.ai-grid div+div{border-left:1px solid rgba(255,255,255,.25)}
-.ai-grid b{display:block;font:700 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:var(--s1);color:#fff}
+.success-item{
+  min-block-size: var(--space-xl); padding-inline: var(--space-s);
+  border-radius: var(--radius); background: var(--surface-card); border: var(--border);
+  display:flex; align-items:center; gap: var(--space-s); color: var(--ink-2);
+  font-size: var(--step-n1);
+}
+.success-item .check{ margin-inline-start:auto; color: var(--accent); display:grid; place-items:center }
+.success-item .check svg{ inline-size: var(--icon-sm); block-size: var(--icon-sm); fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round }
+.not-equal{
+  text-align:center; border-inline:1px solid var(--line);
+  padding-block: var(--space-m); block-size:100%;
+  display:flex; flex-direction:column; justify-content:center;
+}
+.not-equal .symbol{
+  font-family: var(--font-serif); font-size: var(--step-7);
+  line-height:.8; color: var(--accent);
+}
+.not-equal .label{
+  font-family: var(--font-serif); font-size: var(--step-3); line-height:1.1;
+  letter-spacing:-.03em; text-transform:none; color: var(--ink-1);
+  margin-block-start: var(--space-m);
+}
+.surfaced{
+  padding: var(--space-xs); border-radius: var(--radius);
+  background: var(--surface-card); border: var(--border);
+  display:flex; align-items:center; gap: var(--space-xs);
+  font-size: var(--step-n1); color: var(--ink-2); min-inline-size:0;
+}
+.flow-panel{
+  padding: var(--space-s); border-radius: var(--radius);
+  background: var(--surface-2); border: var(--border); min-inline-size:0;
+}
+.flow-panel[data-tone="after"]{
+  background: var(--accent-soft); border-color: var(--accent-line);
+}
+.flow-step{
+  min-block-size: var(--space-xl); padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--radius); background: var(--surface);
+  border: var(--border); display:flex; align-items:center; justify-content:center;
+  text-align:center; font-size: var(--step-n1); line-height:1.25; color: var(--ink-2);
+}
+.flow-step[data-tone="accent"]{
+  color: var(--accent-ink); border-color: var(--accent-line);
+  background: var(--surface-card); font-weight:700;
+}
+.chev{
+  inline-size: var(--icon-sm); block-size: var(--icon-sm); flex:0 0 auto;
+  fill:none; stroke: var(--ink-4); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;
+}
+.human-review{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-inline-size:5rem; gap: var(--space-3xs); color: var(--ink-2);
+  font-size: var(--step-n1); line-height:1.2; text-align:center;
+}
+.human-review svg{
+  inline-size: var(--icon-md); block-size: var(--icon-md);
+  fill:none; stroke: var(--accent); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;
+}
+.loop-note{
+  display:flex; align-items:center; gap: var(--space-2xs);
+  font:700 var(--step-n1)/1.3 var(--font-mono); letter-spacing:.08em;
+  text-transform:uppercase; color: var(--accent-ink);
+}
+.loop-note svg{
+  inline-size: var(--icon-sm); block-size: var(--icon-sm); flex:0 0 auto;
+  fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;
+}
 
-.metrics-band{position:relative;z-index:3;margin:0 -4.5vw;padding:var(--s6) 4.5vw var(--s7);border-top:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(245,245,243,.88))}
-.metrics-inner{width:min(var(--max),100%);margin:auto}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr)}
-.metric{padding:0 3vw 0 0}
-.metric+.metric{border-left:1px solid var(--line);padding-left:3vw}
-.metric-num{font-family:var(--serif);font-size:clamp(48px,4.7vw,78px);line-height:.96;letter-spacing:-.05em;color:var(--ink-900)}
-.metric-unit{font-family:var(--mono);font-size:.2em;font-weight:700;letter-spacing:.1em;vertical-align:.9em;margin-left:.25em;color:var(--ink-400)}
-.metric-label{font:700 11px/1.2 var(--mono);letter-spacing:.09em;text-transform:uppercase;margin-top:var(--s3);padding-top:var(--s3);border-top:2px solid var(--blue);display:inline-block;color:var(--ink-900)}
-.metric-desc{font-size:13px;line-height:1.4;color:var(--ink-500);margin-top:var(--s3);max-width:190px}
-.hero-thesis{text-align:center;font-size:clamp(21px,2.1vw,34px);margin:var(--s7) auto 0;max-width:1100px;color:var(--ink-900)}
+/* --- 05 governance ------------------------------------------------------- */
 
-/* ===== 02 CHALLENGE ===== */
-.challenge-grid{display:grid;grid-template-columns:minmax(430px,.82fr) minmax(520px,1.18fr);gap:6vw;align-items:center}
-.challenge-copy h2{font-size:clamp(56px,5.7vw,92px);max-width:670px}
-.challenge-copy .subhead{font-family:var(--serif);font-size:clamp(34px,3.2vw,52px);line-height:1;letter-spacing:-.035em;color:var(--ink-300);margin:var(--s2) 0 var(--s6)}
-.challenge-points{display:grid;max-width:590px}
-.challenge-point{display:grid;grid-template-columns:var(--icon) 1fr;gap:var(--s4);padding:var(--s4) 0;border-bottom:1px solid var(--line)}
-.challenge-point:last-child{border-bottom:0}
-.challenge-point h3{font-size:17px;line-height:1.25;margin:var(--s1) 0 var(--s1);color:var(--ink-900)}
-.challenge-point p{margin:0;color:var(--ink-500);font-size:14px;line-height:1.5}
+.trust-label{
+  font:700 var(--step-n1)/1 var(--font-mono); letter-spacing:.22em;
+  text-transform:uppercase; color: var(--ink-4);
+}
+.gov-card{
+  padding: var(--space-m); border-radius: var(--radius);
+  background: var(--surface-card); border: var(--border); box-shadow: var(--shadow-2);
+}
 
-.flywheel-wrap{position:relative;aspect-ratio:720/590;width:100%}
-.flywheel-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}
-.flywheel-center .small{font:700 11px/1 var(--mono);letter-spacing:.15em;color:var(--ink-400);text-transform:uppercase}
-.flywheel-center .big{font:700 clamp(28px,2.6vw,42px)/1.05 var(--mono);letter-spacing:.04em;margin-top:var(--s3);color:var(--ink-900)}
-.fly-node{position:absolute;width:29%;min-width:170px;padding:var(--s4);border-radius:8px;background:var(--white-card);border:1px solid var(--line-2);box-shadow:0 12px 32px rgba(40,50,66,.05);display:grid;grid-template-columns:34px 1fr;gap:var(--s3);align-items:start}
-.fly-node svg{width:30px;height:30px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.fly-node b{font:700 12px/1.2 var(--mono);letter-spacing:.03em;text-transform:uppercase;display:block;margin-bottom:var(--s1);color:var(--ink-900)}
-.fly-node span{font-size:12px;line-height:1.4;color:var(--ink-500)}
-.fly-node.n1{left:50%;top:0;transform:translateX(-50%)}
-.fly-node.n2{right:0;top:26%}
-.fly-node.n3{right:0;bottom:14%}
-.fly-node.n4{left:50%;bottom:0;transform:translateX(-50%)}
-.fly-node.n5{left:0;bottom:14%}
-.fly-node.n6{left:0;top:26%}
-.flywheel-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.flywheel-svg path{fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;opacity:.85}
-.challenge-thesis{margin:var(--s7) auto 0;max-width:1000px;text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(27px,2.6vw,42px);letter-spacing:-.03em;color:var(--ink-900)}
+/* --- narrow screens ------------------------------------------------------
+   The flywheel is the one thing that cannot shrink: it is a fixed ring of
+   absolutely positioned nodes. Below this width it becomes a plain list.  */
 
-/* ===== 03 APPROACH ===== */
-.approach-head{display:grid;grid-template-columns:minmax(420px,.85fr) minmax(620px,1.15fr);gap:4vw;align-items:end;margin-bottom:var(--s7)}
-.approach-head h2{font-size:clamp(54px,5.4vw,88px);max-width:660px}
-.role-box{justify-self:end;max-width:500px;padding:var(--s4) var(--s5);border-left:2px solid var(--blue);background:rgba(255,255,255,.46)}
-.role-box .role-title{font:700 11px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--blue);margin-bottom:var(--s2)}
-.role-box p{margin:0;color:var(--ink-500);font-size:14px;line-height:1.55}
-.approach-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s5);position:relative}
-.approach-flow::before{content:"";position:absolute;left:15%;right:15%;top:23px;height:1px;background:var(--blue-line);z-index:0}
-.stage{position:relative;z-index:1;padding:0 var(--s3);min-width:0;display:flex;flex-direction:column}
-.stage-num{width:46px;height:46px;border-radius:50%;border:1px solid var(--blue-line);background:var(--blue-soft);display:grid;place-items:center;margin:0 auto var(--s3);font:700 18px/1 var(--mono);color:var(--blue)}
-.stage h3{text-align:center;font:700 13px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;margin:0 0 var(--s2);color:var(--ink-900)}
-.stage .stage-sub{text-align:center;color:var(--ink-500);font-size:13px;line-height:1.4;min-height:36px}
-.stage-card{flex:1 1 auto;margin-top:var(--s4);min-height:250px;padding:var(--s5);border-radius:8px;background:var(--white-card);border:1px solid var(--line);box-shadow:0 14px 34px rgba(29,42,58,.045)}
-.stage-card ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3)}
-.stage-card li{display:flex;align-items:center;gap:var(--s3);font-size:13px;color:var(--ink-500)}
-.transform-core{display:grid;grid-template-rows:auto auto 1fr auto;gap:var(--s3)}
-.transform-core .llm-block{display:grid;place-items:center}
-.transform-top{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}
-.mini-chip{padding:var(--s3) var(--s2);border:1px solid var(--blue-line);border-radius:7px;text-align:center;font-size:11px;line-height:1.2;background:var(--blue-soft);color:var(--ink-700)}
-.transform-arrow{display:grid;place-items:center}
-.transform-arrow svg{width:20px;height:20px;stroke:var(--ink-400);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.llm-block{padding:var(--s4);border-radius:8px;background:linear-gradient(135deg,#135ef0,#4b8bff);color:#fff;text-align:center;font:700 13px/1.3 var(--mono);letter-spacing:.07em;text-transform:uppercase;box-shadow:0 10px 24px rgba(18,99,255,.18)}
-.validation-ladder{display:grid;gap:var(--s2)}
-.validation-ladder span{padding:var(--s3);border:1px solid var(--line);border-radius:6px;background:#fafbfc;font:700 11px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-700)}
-.approach-thesis{text-align:center;font-family:var(--serif);font-style:italic;font-size:clamp(26px,2.4vw,39px);margin:var(--s7) auto 0;max-width:1100px;color:var(--ink-900)}
+@media (max-width: 52rem){
+  .flywheel{
+    aspect-ratio:auto; display:flex; flex-direction:column;
+    gap: var(--space-2xs); align-self:stretch;
+  }
+  .flywheel-svg{ display:none }
+  .flywheel-center{
+    position:static; transform:none; text-align:start;
+    margin-block-end: var(--space-2xs);
+  }
+  /* matched specificity: .fly-node.nX would otherwise keep its transform */
+  .fly-node.n1, .fly-node.n2, .fly-node.n3,
+  .fly-node.n4, .fly-node.n5, .fly-node.n6{
+    position:static; inline-size:100%; min-inline-size:0; transform:none;
+  }
+}
 
-/* ===== 04 PIVOT ===== */
-.pivot-head h2{font-size:clamp(54px,5.3vw,86px);max-width:720px;margin-bottom:var(--s6)}
-.pivot-grid{display:grid;grid-template-columns:minmax(320px,.9fr) 200px minmax(420px,1.1fr);gap:var(--s6);align-items:center}
-.pivot-grid > *{min-width:0}
-.success-list{display:grid;gap:var(--s2)}
-.success-item{min-height:48px;padding:0 var(--s3);border-radius:7px;background:var(--white-card);border:1px solid var(--line);display:flex;align-items:center;gap:var(--s3);color:var(--ink-700);font-size:14px}
-.success-item .check{margin-left:auto;display:grid;place-items:center;width:20px;height:20px}
-.success-item .check svg{width:16px;height:16px;stroke:var(--blue);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.success-foot{font-size:11px;color:var(--ink-400);margin-top:var(--s2)}
-.not-equal{text-align:center;border-left:1px solid var(--line);border-right:1px solid var(--line);padding:var(--s5) 0}
-.not-equal .symbol{font-family:var(--serif);font-size:clamp(90px,9vw,130px);line-height:.7;color:var(--blue);font-weight:400}
-.not-equal .label{font-family:var(--serif);font-size:clamp(26px,2.4vw,34px);line-height:1.1;letter-spacing:-.03em;margin-top:var(--s5);color:var(--ink-900)}
-.surfaced-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--s2)}
-.surfaced{padding:var(--s3);border-radius:7px;background:var(--white-card);border:1px solid var(--line);display:flex;align-items:center;gap:var(--s3);font-size:13px;color:var(--ink-700);min-width:0}
-.pivot-flow{margin-top:var(--s6);padding-top:var(--s5);border-top:1px solid var(--line)}
-.pivot-flow-title{font:700 11px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;margin-bottom:var(--s4);color:var(--ink-900)}
-.before-after{display:grid;grid-template-columns:minmax(0,.7fr) 40px minmax(0,1.3fr);gap:var(--s4);align-items:center}
-.flow-panel{padding:var(--s4);border-radius:8px;background:rgba(242,244,247,.72);border:1px solid var(--line);min-width:0}
-.flow-panel.after{background:linear-gradient(90deg,rgba(235,243,255,.8),rgba(243,248,255,.6));border-color:var(--blue-line)}
-.flow-panel-title{font:700 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--s3);color:var(--ink-400)}
-.flow-panel.after .flow-panel-title{color:var(--blue)}
-.flow-track{display:flex;align-items:center;gap:var(--s2);flex-wrap:wrap}
-.flow-item{display:flex;align-items:center;gap:var(--s2);min-width:0}
-.flow-step{min-height:44px;padding:var(--s2) var(--s3);border-radius:6px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;text-align:center;font-size:11px;line-height:1.25;color:var(--ink-700)}
-.flow-step.blue{color:var(--blue);border-color:var(--blue-line);background:var(--blue-soft);font-weight:700}
-.flow-transition{display:grid;place-items:center}
-.flow-transition svg{width:26px;height:26px;stroke:var(--blue);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.loop-note{margin-top:var(--s3);display:flex;align-items:center;gap:var(--s2);font:700 10px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--blue)}
-.loop-note svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-.human-review{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:76px;gap:var(--s1);color:var(--ink-700);font-size:11px;line-height:1.2;text-align:center}
-.human-review svg{width:26px;height:26px;stroke:var(--blue);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.pivot-thesis{text-align:center;margin:var(--s7) auto 0;font-family:var(--serif);font-size:clamp(25px,2.35vw,38px);line-height:1.1;letter-spacing:-.03em;max-width:950px;color:var(--ink-900)}
-.pivot-thesis span{display:block;color:var(--ink-300)}
+/* --- footer -------------------------------------------------------------- */
 
-/* ===== 05 GOVERNANCE ===== */
-.governance-head h2{font-size:clamp(54px,5.3vw,86px);max-width:850px;margin-bottom:var(--s4)}
-.trust-label{font:700 12px/1 var(--mono);letter-spacing:.22em;color:var(--ink-400);text-transform:uppercase;margin:var(--s3) 0 var(--s6)}
-.gov-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s5);max-width:1050px}
-.gov-card{padding:var(--s5);border-radius:8px;background:var(--white-card);border:1px solid var(--line);box-shadow:0 12px 30px rgba(29,42,56,.04);display:flex;flex-direction:column;gap:var(--s4)}
-.gov-card .top{display:grid;grid-template-columns:var(--icon) 1fr;gap:var(--s4);align-items:center}
-.gov-card h3{font:700 14px/1.35 var(--mono);letter-spacing:.04em;text-transform:uppercase;margin:0;color:var(--ink-900)}
-.gov-card p{margin:0;font-size:14px;line-height:1.5;color:var(--ink-500)}
-.governance-thesis{text-align:center;margin:var(--s8) auto 0;font-family:var(--serif);font-size:clamp(30px,3vw,49px);line-height:1.1;letter-spacing:-.035em;max-width:1000px;color:var(--ink-900)}
-.governance-thesis span{display:block}
-.governance-thesis span:nth-child(2){color:var(--ink-300)}
-
-/* ===== footer ===== */
 .site-foot{
-  border-top:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(238,242,246,.8),rgba(247,245,240,1));
-  padding:var(--s7) 4.5vw;
-}
-.foot-inner{width:min(var(--max),100%);margin:auto;display:flex;flex-wrap:wrap;gap:var(--s5);align-items:baseline;justify-content:space-between}
-.foot-mark{font:600 13px/1 var(--mono);letter-spacing:.22em;color:var(--ink-900)}
-.foot-note{font:600 11px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-400)}
-
-/* ===== reveal motion ===== */
-.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
-.js .reveal.in{opacity:1;transform:none}
-.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
-
-@media (max-height:800px){html{scroll-snap-type:none}}
-
-@media (max-width:1100px){
-  .chapter-nav{gap:var(--s4)}.brand{min-width:210px}
-  .hero-top,.challenge-grid,.approach-head{grid-template-columns:1fr;gap:var(--s6)}
-  .legacy-flow{justify-self:start;grid-template-columns:1fr auto 1fr;gap:var(--s3);width:100%}
-  .flow-arrow{width:var(--s6);height:1px}.flow-arrow::after{right:-1px;left:auto;bottom:-4px;transform:rotate(-45deg)}
-  .ai-box{width:100%}.flow-box{width:100%}
-  .challenge-copy h2,.challenge-copy .subhead{max-width:none}
-  .approach-head{align-items:start}.role-box{justify-self:start}
-  .pivot-grid{grid-template-columns:1fr 150px 1fr;gap:var(--s5)}
-}
-@media (max-width:820px){
-  html{scroll-snap-type:none}
-  :root{--navH:60px;--icon:52px}
-  .site-nav{padding:0 18px}.nav-inner{gap:var(--s3)}.brand{min-width:auto}.brand-rule,.brand-copy{display:none}
-  .chapter-nav{gap:11px;overflow-x:auto;margin-left:auto;scrollbar-width:none}.chapter-nav::-webkit-scrollbar{display:none}.chapter-nav a{font-size:9px}
-  .chapter{min-height:auto;padding:88px 18px 60px}
-  .display{line-height:.98}
-  .scene-art .structure{width:30vw;opacity:.4}
-  .scroll-cue{display:none}
-  .hero-copy h1,.challenge-copy h2,.approach-head h2,.pivot-head h2,.governance-head h2{font-size:clamp(48px,12vw,70px)}
-  .hero-top{display:block}.legacy-flow{margin-top:var(--s7);display:grid;grid-template-columns:1fr;gap:var(--s3)}.flow-arrow{width:1px;height:22px;margin:auto}.flow-arrow::after{left:-4px;right:auto;bottom:-2px;transform:rotate(45deg)}
-  .meta-row{grid-template-columns:repeat(2,1fr)}.meta-item:nth-child(3){border-left:0;padding-left:0;border-top:1px solid var(--line)}.meta-item:nth-child(4){border-top:1px solid var(--line)}
-  .metrics{grid-template-columns:repeat(2,1fr);gap:var(--s5) 0}.metric:nth-child(3){border-left:0;padding-left:0}.metric:nth-child(n+3){padding-top:var(--s3);border-top:1px solid var(--line)}
-  .challenge-grid{display:block}
-  .flywheel-wrap{margin-top:var(--s6);aspect-ratio:auto;display:grid;gap:var(--s2)}
-  .flywheel-svg,.flywheel-center{display:none}
-  .fly-node{position:relative!important;inset:auto!important;transform:none!important;width:100%}
-  .challenge-thesis{text-align:left}
-  .approach-flow{grid-template-columns:1fr}.approach-flow::before{display:none}.stage{padding:0}.stage-card{min-height:0}.role-box{max-width:none}
-  .pivot-grid{grid-template-columns:1fr}.not-equal{border:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.surfaced-grid{grid-template-columns:1fr}
-  .before-after{grid-template-columns:1fr}.flow-transition{transform:rotate(90deg)}
-  .gov-cards{grid-template-columns:1fr}
-  .foot-inner{flex-direction:column;gap:var(--s3)}
-}
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto;scroll-snap-type:none}
-  .js .reveal{opacity:1;transform:none;transition:none}
-  .chapter-nav a,.chapter-nav a::after{transition:none}
-}
-@media print{
-  .site-nav,.scroll-cue,.scene-art{display:none!important}
-  html{scroll-snap-type:none}
-  body{background:#fff}
-  .chapter{min-height:0;page-break-after:always;break-after:page;padding:0 0 24px;display:block}
-  .chapter-inner{width:100%}
-  .js .reveal{opacity:1!important;transform:none!important}
-  .card,.stage-card,.gov-card,.fly-node,.flow-panel,.success-item,.surfaced,.flow-box{box-shadow:none!important;background:#fff!important}
-  .flywheel-wrap{aspect-ratio:auto;display:grid;gap:8px}
-  .flywheel-svg,.flywheel-center{display:none}
-  .fly-node{position:relative!important;inset:auto!important;transform:none!important;width:100%}
+  border-block-start: var(--border);
+  background: linear-gradient(180deg, var(--art-sky-3), var(--art-sky-2));
+  padding-block: var(--space-xl);
 }
 </style>
 </head>
 <body>
+
 <nav class="site-nav" aria-label="Case study chapters">
-  <div class="nav-inner">
-    <div class="brand"><div class="brand-mark">SB</div><div class="brand-rule"></div><div class="brand-copy">CASE STUDY</div></div>
-    <div class="chapter-nav">
-      <a href="#scale" data-target="scale" class="active">01 SCALE</a>
-      <a href="#challenge" data-target="challenge">02 CHALLENGE</a>
-      <a href="#approach" data-target="approach">03 APPROACH</a>
-      <a href="#pivot" data-target="pivot">04 PIVOT</a>
-      <a href="#governance" data-target="governance">05 GOVERNANCE</a>
+  <div class="center" style="--center-max: var(--max)">
+    <div class="cluster" style="--cluster-justify: space-between">
+      <div class="cluster" style="--cluster-space: var(--space-xs)">
+        <span class="nav-mark">SB</span>
+        <span class="nav-rule" aria-hidden="true"></span>
+        <span class="nav-copy">Case study</span>
+      </div>
+      <div class="cluster" data-nav-links style="--cluster-space: var(--space-m)">
+        <a class="nav-link" href="#scale" aria-current="true">01 SCALE</a>
+        <a class="nav-link" href="#challenge">02 CHALLENGE</a>
+        <a class="nav-link" href="#approach">03 APPROACH</a>
+        <a class="nav-link" href="#pivot">04 PIVOT</a>
+        <a class="nav-link" href="#governance">05 GOVERNANCE</a>
+      </div>
     </div>
   </div>
 </nav>
+
 <main>
 
-<!-- 01 SCALE -->
-<section class="chapter" id="scale" aria-labelledby="scale-title">
-  <div class="scene-art" aria-hidden="true"><div class="wash"></div><div class="mountains"></div><div class="structure"></div><div class="sun"></div></div>
-  <div class="chapter-inner">
-    <div class="hero-top">
-      <div class="hero-copy">
-        <div class="chapter-label reveal">01 / Scale</div>
-        <h1 class="display reveal d1" id="scale-title">Legacy modernization.<br>Accelerated.</h1>
-        <p class="body-lg reveal d2">A federal benefits platform had accumulated more than a million lines of Java, hundreds of APIs, decades of policy logic, and institutional knowledge distributed across constantly changing vendor teams. We set out to prove that AI could fundamentally change the economics of modernizing it.</p>
-        <div class="meta-row reveal d3" aria-label="Engagement metadata">
-          <div class="meta-item"><div class="meta-title">Industry</div><div class="meta-value">Federal Benefits</div></div>
-          <div class="meta-item"><div class="meta-title">Transformation</div><div class="meta-value">Java + DB2 → Postgres</div></div>
-          <div class="meta-item"><div class="meta-title">Scale</div><div class="meta-value">Enterprise Platform</div></div>
-          <div class="meta-item"><div class="meta-title">Approach</div><div class="meta-value">AI-accelerated Migration</div></div>
-        </div>
-      </div>
-      <div class="legacy-flow reveal d2" aria-label="Legacy estate to AI acceleration to target estate">
-        <div class="flow-box">
-          <div class="title">Legacy Estate</div>
-          <ul><li>JAVA</li><li>DB2</li><li>25+ YEARS OF LOGIC</li></ul>
-        </div>
-        <div class="flow-arrow" aria-hidden="true"></div>
-        <div class="ai-box">
-          <div class="ai-title">AI Acceleration</div>
-          <div class="ai-grid">
-            <div><b>Context</b>Understand legacy logic</div>
-            <div><b>Transform</b>Generate target implementation</div>
-            <div><b>Validate</b>Prove behavioral equivalence</div>
+<!-- ========== 01 SCALE ================================================== -->
+<section class="chapter cover" id="scale" aria-labelledby="scale-t">
+  <div class="scene-art" aria-hidden="true">
+    <div class="wash"></div><div class="ridge"></div><div class="structure"></div><div class="halo"></div>
+  </div>
+  <div class="center chapter-inner" data-cover-centre>
+    <div class="stack" style="--stack-space: var(--space-xl)">
+
+      <div class="sidebar" data-side="end" style="--sidebar-width: 26rem; --sidebar-content-min: 55%">
+        <div class="stack">
+          <p class="eyebrow reveal">01 / Scale</p>
+          <h1 class="display" data-size="hero" id="scale-t">Legacy modernization.<br>Accelerated.</h1>
+          <p class="lead measure reveal">A federal benefits platform had accumulated more than a million lines of Java, hundreds of APIs, decades of policy logic, and institutional knowledge distributed across constantly changing vendor teams. We set out to prove that AI could fundamentally change the economics of modernizing it.</p>
+          <div class="cluster" style="--cluster-align: stretch; --cluster-space: var(--space-m)" aria-label="Engagement metadata">
+            <div class="meta-item"><p class="kicker">Industry</p><p class="small">Federal Benefits</p></div>
+            <div class="meta-item"><p class="kicker">Transformation</p><p class="small">Java + DB2 to Postgres</p></div>
+            <div class="meta-item"><p class="kicker">Scale</p><p class="small">Enterprise Platform</p></div>
+            <div class="meta-item"><p class="kicker">Approach</p><p class="small">AI-accelerated Migration</p></div>
           </div>
         </div>
-        <div class="flow-arrow" aria-hidden="true"></div>
-        <div class="flow-box">
-          <div class="title">Target Estate</div>
-          <ul><li>POSTGRES</li><li>MODERN SDLC</li></ul>
+
+        <div class="stack reveal" style="--stack-space: var(--space-3xs)" aria-label="Legacy estate to AI acceleration to target estate">
+          <div class="flow-box stack" style="--stack-space: var(--space-2xs)">
+            <p class="label">Legacy Estate</p>
+            <p class="small">Java</p><p class="small">DB2</p><p class="small">25+ years of logic</p>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="ai-box stack" style="--stack-space: var(--space-s)">
+            <p class="label" style="text-align:center">AI Acceleration</p>
+            <div class="switcher" style="--switcher-threshold: 24rem; --switcher-space: var(--space-s)">
+              <div class="ai-cell"><p class="label">Context</p><p class="small">Understand legacy logic</p></div>
+              <div class="ai-cell"><p class="label">Transform</p><p class="small">Generate target implementation</p></div>
+              <div class="ai-cell"><p class="label">Validate</p><p class="small">Prove behavioral equivalence</p></div>
+            </div>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="flow-box stack" style="--stack-space: var(--space-2xs)">
+            <p class="label">Target Estate</p>
+            <p class="small">Postgres</p><p class="small">Modern SDLC</p>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="metrics-band reveal d4">
-      <div class="metrics-inner">
-        <div class="metrics">
-          <div class="metric"><div class="metric-num">1M+</div><div class="metric-label">Lines of Java</div><div class="metric-desc">A large, complex codebase built over decades</div></div>
-          <div class="metric"><div class="metric-num">400+</div><div class="metric-label">API endpoints</div><div class="metric-desc">Spanning core benefits functionality</div></div>
-          <div class="metric"><div class="metric-num">41</div><div class="metric-label">Batch jobs</div><div class="metric-desc">Critical to ongoing operations</div></div>
-          <div class="metric"><div class="metric-num">25+<span class="metric-unit">Years</span></div><div class="metric-label">Policy logic</div><div class="metric-desc">Embedded business rules and institutional knowledge</div></div>
-        </div>
-        <div class="hero-thesis pull">This wasn’t just technical debt. It was institutional knowledge encoded in software.</div>
       </div>
     </div>
   </div>
-  <div class="scroll-cue"><span>Scroll</span><span class="shaft"></span></div>
-</section>
 
-<!-- 02 CHALLENGE -->
-<section class="chapter" id="challenge" aria-labelledby="challenge-title">
-  <div class="scene-art" aria-hidden="true"><div class="wash"></div><div class="mountains"></div><div class="structure"></div><div class="sun"></div></div>
-  <div class="chapter-inner">
-    <div class="challenge-grid">
-      <div class="challenge-copy">
-        <div class="chapter-label reveal">02 / Challenge</div>
-        <h2 class="display reveal d1" id="challenge-title">25+ years<br>of policy logic.</h2>
-        <div class="subhead reveal d2">Constant vendor churn.<br>Limited institutional memory.</div>
-        <div class="challenge-points reveal d3">
-          <div class="challenge-point">
-            <div class="icon-disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-            <div><h3>Knowledge kept leaving</h3><p>The codebase was maintained across rotating offshore vendor teams. Context often disappeared when engineers left.</p></div>
+  <div class="metrics-band" style="position:relative; z-index:1">
+    <div class="center" style="--center-max: var(--max)">
+      <div class="stack" style="--stack-space: var(--space-xl)">
+        <div class="grid" style="--grid-min: 12rem">
+          <div class="stack" style="--stack-space: var(--space-2xs)">
+            <p class="metric-num">1M+</p><p class="metric-label">Lines of Java</p>
+            <p class="small">A large, complex codebase built over decades</p>
           </div>
-          <div class="challenge-point">
-            <div class="icon-disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></div>
-            <div><h3>The code became the specification</h3><p>Documentation was limited, forcing teams to reconstruct intent from Java, DB2 behavior, stored procedures, tickets and previous fixes.</p></div>
+          <div class="stack" style="--stack-space: var(--space-2xs)">
+            <p class="metric-num">400+</p><p class="metric-label">API endpoints</p>
+            <p class="small">Spanning core benefits functionality</p>
           </div>
-          <div class="challenge-point">
-            <div class="icon-disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-            <div><h3>The client stayed reactive</h3><p>Knowledge gaps made changes riskier, increased production issues, and slowed delivery.</p></div>
+          <div class="stack" style="--stack-space: var(--space-2xs)">
+            <p class="metric-num">41</p><p class="metric-label">Batch jobs</p>
+            <p class="small">Critical to ongoing operations</p>
+          </div>
+          <div class="stack" style="--stack-space: var(--space-2xs)">
+            <p class="metric-num">25+<span class="metric-unit">Years</span></p>
+            <p class="metric-label">Policy logic</p>
+            <p class="small">Embedded business rules and institutional knowledge</p>
           </div>
         </div>
-      </div>
-      <div class="flywheel-wrap reveal d2" aria-label="Knowledge debt flywheel">
-        <svg class="flywheel-svg" viewBox="0 0 720 590" aria-hidden="true">
-          <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#1263ff"/></marker></defs>
-          <path d="M472 64 C548 80 592 114 610 150" marker-end="url(#arrow)"/>
-          <path d="M617 262 C646 312 646 350 619 398" marker-end="url(#arrow)"/>
-          <path d="M600 519 C560 554 518 564 480 549" marker-end="url(#arrow)"/>
-          <path d="M240 549 C200 564 158 554 120 519" marker-end="url(#arrow)"/>
-          <path d="M103 398 C74 350 74 312 101 262" marker-end="url(#arrow)"/>
-          <path d="M110 150 C128 114 172 80 248 64" marker-end="url(#arrow)"/>
-        </svg>
-        <div class="flywheel-center"><div class="small">A Cycle of</div><div class="big">KNOWLEDGE<br>DEBT</div></div>
-        <div class="fly-node n1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg><div><b>Vendor churn</b><span>Teams rotate, context leaves</span></div></div>
-        <div class="fly-node n2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div><b>Context disappears</b><span>Implementation details are lost</span></div></div>
-        <div class="fly-node n3"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06-2.83 2.83-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21h-4v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06-2.83-2.83.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3v-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06 2.83-2.83.06.06A1.65 1.65 0 0 0 8.92 4a1.65 1.65 0 0 0 1-1.51V2h4v.49a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06 2.83 2.83-.06.06A1.65 1.65 0 0 0 19.4 9c.12.61.64 1.06 1.27 1.09H21v4h-.33c-.63.03-1.15.48-1.27 1.09z"/></svg><div><b>Harder changes</b><span>More effort to understand and modify</span></div></div>
-        <div class="fly-node n4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><b>Production issues</b><span>Higher risk of defects and outages</span></div></div>
-        <div class="fly-node n5"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><div><b>More complexity</b><span>Workarounds and exceptions accumulate</span></div></div>
-        <div class="fly-node n6"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-9.36L1 10"/></svg><div><b>Hotfixes</b><span>Short-term fixes over long-term solutions</span></div></div>
+        <p class="thesis" data-style="italic">This wasn’t just technical debt. It was institutional knowledge encoded in software.</p>
       </div>
     </div>
-    <div class="challenge-thesis reveal d4">Legacy systems hold more than code. They hold institutional context.</div>
   </div>
-  <div class="scroll-cue"><span>Scroll</span><span class="shaft"></span></div>
 </section>
 
-<!-- 03 APPROACH -->
-<section class="chapter" id="approach" aria-labelledby="approach-title">
-  <div class="scene-art" aria-hidden="true"><div class="wash"></div><div class="mountains"></div><div class="structure"></div><div class="sun"></div></div>
-  <div class="chapter-inner">
-    <div class="approach-head">
-      <div>
-        <div class="chapter-label reveal">03 / Approach</div>
-        <h2 class="display prose reveal d1" id="approach-title">Could AI change the economics of modernization?</h2>
-      </div>
-      <div class="role-box reveal d2">
-        <div class="role-title">My role</div>
-        <p>Defined the PoC hypothesis, shaped the architecture, led the AI engineering team, and turned the experiment into a broader program capability.</p>
-      </div>
-    </div>
-    <div class="approach-flow reveal d2">
-      <article class="stage">
-        <div class="stage-num">1</div><h3>Understand</h3><div class="stage-sub">Give the model application context, not isolated snippets.</div>
-        <div class="stage-card"><ul>
-          <li><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Java estate</li>
-          <li><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>DB2 semantics</li>
-          <li><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 12h4l4-7h2M11 12l4 7h2"/></svg></span>Dependencies</li>
-          <li><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 16l4-5 4 3 4-7"/></svg></span>Migration rules</li>
-        </ul></div>
-      </article>
-      <article class="stage">
-        <div class="stage-num">2</div><h3>Transform</h3><div class="stage-sub">Generate the target implementation using reusable migration patterns.</div>
-        <div class="stage-card transform-core">
-          <div class="transform-top"><div class="mini-chip">Controller</div><div class="mini-chip">Context</div><div class="mini-chip">Rules</div></div>
-          <div class="transform-arrow"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="4" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg></div>
-          <div class="llm-block">AI-Accelerated Translation</div>
-          <div class="mini-chip" style="font-size:12px">Postgres candidate</div>
-        </div>
-      </article>
-      <article class="stage">
-        <div class="stage-num">3</div><h3>Validate</h3><div class="stage-sub">Prove behavior before accepting the generated conversion.</div>
-        <div class="stage-card"><div class="validation-ladder">
-          <span>Compile</span><span>Unit</span><span>Integration</span><span>Behavior</span><span>Human acceptance</span>
-        </div></div>
-      </article>
-    </div>
-    <div class="approach-thesis reveal d4">Understand the legacy. Transform with AI. Validate with rigor.</div>
+<!-- ========== 02 CHALLENGE ============================================== -->
+<section class="chapter cover" id="challenge" aria-labelledby="challenge-t">
+  <div class="scene-art" aria-hidden="true">
+    <div class="wash"></div><div class="ridge"></div><div class="structure"></div><div class="halo"></div>
   </div>
-  <div class="scroll-cue"><span>Scroll</span><span class="shaft"></span></div>
-</section>
+  <div class="center chapter-inner" data-cover-centre>
+    <div class="stack" style="--stack-space: var(--space-xl)">
 
-<!-- 04 PIVOT -->
-<section class="chapter" id="pivot" aria-labelledby="pivot-title">
-  <div class="scene-art" aria-hidden="true"><div class="wash"></div><div class="mountains"></div><div class="structure"></div><div class="sun"></div></div>
-  <div class="chapter-inner">
-    <div class="pivot-head">
-      <div class="chapter-label reveal">04 / Pivot</div>
-      <h2 class="display prose reveal d1" id="pivot-title">Then integration testing changed the story.</h2>
-    </div>
-    <div class="pivot-grid reveal d2">
-      <div>
-        <div class="kicker">What looked successful</div>
-        <div class="success-list">
-          <div class="success-item">Generated <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></div>
-          <div class="success-item">Compiled <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></div>
-          <div class="success-item">Happy path <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></div>
-          <div class="success-item">&gt;90–95% first-pass quality <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></div>
-        </div>
-        <div class="success-foot">Measured in controlled scenarios.</div>
-      </div>
-      <div class="not-equal">
-        <div class="symbol" aria-hidden="true">≠</div>
-        <div class="label">Behaviorally<br>equivalent</div>
-      </div>
-      <div>
-        <div class="kicker">What surfaced</div>
-        <div class="surfaced-grid">
-          <div class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Date handling</div>
-          <div class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/></svg></span>Null semantics</div>
-          <div class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span>String functions</div>
-          <div class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>Stored procedures</div>
-          <div class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="7.9 2 16.1 2 22 7.9 22 16.1 16.1 22 7.9 22 2 16.1 2 7.9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>Negative paths</div>
-          <div class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg></span>Data-return behavior</div>
-        </div>
-      </div>
-    </div>
-    <div class="pivot-flow reveal d3">
-      <div class="pivot-flow-title">The Pivot</div>
-      <div class="before-after">
-        <div class="flow-panel">
-          <div class="flow-panel-title">Before</div>
-          <div class="flow-track">
-            <div class="flow-step">Generate</div>
-            <div class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><div class="flow-step">Happy-path test</div></div>
-            <div class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><div class="flow-step">Accept</div></div>
+      <div class="sidebar" style="--sidebar-width: 28rem; --sidebar-content-min: 50%">
+        <div class="stack" style="--stack-space: var(--space-m)">
+          <div class="stack">
+            <p class="eyebrow reveal">02 / Challenge</p>
+            <h2 class="display" id="challenge-t">25+ years<br>of policy logic.</h2>
+            <p class="subhead">Constant vendor churn.<br>Limited institutional memory.</p>
           </div>
-        </div>
-        <div class="flow-transition"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h16M13 6l6 6-6 6"/></svg></div>
-        <div class="flow-panel after">
-          <div class="flow-panel-title">After</div>
-          <div class="flow-track">
-            <div class="flow-step">Understand</div>
-            <div class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><div class="flow-step">Generate</div></div>
-            <div class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><div class="flow-step blue">Validation<br>harness</div></div>
-            <div class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><div class="flow-step blue">Compare<br>behavior</div></div>
-            <div class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg>
-              <div class="human-review">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg><span>Review<br>exceptions</span>
+          <div class="stack" style="--stack-space: var(--space-m)">
+            <div class="with-icon">
+              <span class="icon-disc"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+              <div class="stack" style="--stack-space: var(--space-3xs)">
+                <h3 class="label">Knowledge kept leaving</h3>
+                <p class="small">The codebase was maintained across rotating offshore vendor teams. Context often disappeared when engineers left.</p>
               </div>
             </div>
-            <div class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><div class="flow-step">Promote</div></div>
+            <div class="with-icon">
+              <span class="icon-disc"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
+              <div class="stack" style="--stack-space: var(--space-3xs)">
+                <h3 class="label">The code became the specification</h3>
+                <p class="small">Documentation was limited, forcing teams to reconstruct intent from Java, DB2 behavior, stored procedures, tickets and previous fixes.</p>
+              </div>
+            </div>
+            <div class="with-icon">
+              <span class="icon-disc"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+              <div class="stack" style="--stack-space: var(--space-3xs)">
+                <h3 class="label">The client stayed reactive</h3>
+                <p class="small">Knowledge gaps made changes riskier, increased production issues, and slowed delivery.</p>
+              </div>
+            </div>
           </div>
-          <div class="loop-note">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-9.36L1 10"/></svg>
-            <span>Harness, comparison and review repeat until behavior matches</span>
+        </div>
+
+        <div class="flywheel reveal" aria-label="Knowledge debt flywheel">
+          <svg class="flywheel-svg" viewBox="0 0 720 590" aria-hidden="true">
+            <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="var(--accent)" stroke="none"/></marker></defs>
+            <path d="M472 64 C548 80 592 114 610 150" marker-end="url(#arrow)"/>
+            <path d="M617 262 C646 312 646 350 619 398" marker-end="url(#arrow)"/>
+            <path d="M600 519 C560 554 518 564 480 549" marker-end="url(#arrow)"/>
+            <path d="M240 549 C200 564 158 554 120 519" marker-end="url(#arrow)"/>
+            <path d="M103 398 C74 350 74 312 101 262" marker-end="url(#arrow)"/>
+            <path d="M110 150 C128 114 172 80 248 64" marker-end="url(#arrow)"/>
+          </svg>
+          <div class="flywheel-center">
+            <p class="kicker">A cycle of</p>
+            <p class="big">KNOWLEDGE<br>DEBT</p>
+          </div>
+          <div class="fly-node n1 with-icon">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--accent)"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            <div><span class="label">Vendor churn</span><span class="small">Teams rotate, context leaves</span></div>
+          </div>
+          <div class="fly-node n2 with-icon">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--accent)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div><span class="label">Context disappears</span><span class="small">Implementation details are lost</span></div>
+          </div>
+          <div class="fly-node n3 with-icon">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--accent)"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06-2.83 2.83-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21h-4v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06-2.83-2.83.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3v-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06 2.83-2.83.06.06A1.65 1.65 0 0 0 8.92 4a1.65 1.65 0 0 0 1-1.51V2h4v.49a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06 2.83 2.83-.06.06A1.65 1.65 0 0 0 19.4 9c.12.61.64 1.06 1.27 1.09H21v4h-.33c-.63.03-1.15.48-1.27 1.09z"/></svg>
+            <div><span class="label">Harder changes</span><span class="small">More effort to understand and modify</span></div>
+          </div>
+          <div class="fly-node n4 with-icon">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--accent)"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div><span class="label">Production issues</span><span class="small">Higher risk of defects and outages</span></div>
+          </div>
+          <div class="fly-node n5 with-icon">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--accent)"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            <div><span class="label">More complexity</span><span class="small">Workarounds and exceptions accumulate</span></div>
+          </div>
+          <div class="fly-node n6 with-icon">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" style="color:var(--accent)"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-9.36L1 10"/></svg>
+            <div><span class="label">Hotfixes</span><span class="small">Short-term fixes over long-term solutions</span></div>
           </div>
         </div>
       </div>
+
+      <p class="thesis" data-style="italic">Legacy systems hold more than code. They hold institutional context.</p>
     </div>
-    <div class="pivot-thesis reveal d4">Generation wasn’t the hardest problem.<span>Proving behavioral equivalence was messier.</span></div>
   </div>
-  <div class="scroll-cue"><span>Scroll</span><span class="shaft"></span></div>
+  <p class="scroll-cue">Scroll<span class="shaft" aria-hidden="true"></span></p>
 </section>
 
-<!-- 05 GOVERNANCE -->
-<section class="chapter" id="governance" aria-labelledby="governance-title">
-  <div class="scene-art" aria-hidden="true"><div class="wash"></div><div class="mountains"></div><div class="structure"></div><div class="sun"></div></div>
-  <div class="chapter-inner">
-    <div class="governance-head">
-      <div class="chapter-label reveal">05 / Governance</div>
-      <h2 class="display prose reveal d1" id="governance-title">Acceleration still had to operate inside federal-grade controls.</h2>
-      <div class="trust-label reveal d2">Trust</div>
+<!-- ========== 03 APPROACH =============================================== -->
+<section class="chapter cover" id="approach" aria-labelledby="approach-t">
+  <div class="scene-art" aria-hidden="true">
+    <div class="wash"></div><div class="ridge"></div><div class="structure"></div><div class="halo"></div>
+  </div>
+  <div class="center chapter-inner" data-cover-centre>
+    <div class="stack" style="--stack-space: var(--space-xl)">
+
+      <div class="sidebar" data-side="end" style="--sidebar-width: 22rem">
+        <div class="stack">
+          <p class="eyebrow reveal">03 / Approach</p>
+          <h2 class="display" data-size="prose" id="approach-t">Could AI change the economics of modernization?</h2>
+        </div>
+        <div class="note stack" style="--stack-space: var(--space-2xs)">
+          <p class="kicker" style="color: var(--accent-ink)">My role</p>
+          <p class="small">Defined the PoC hypothesis, shaped the architecture, led the AI engineering team, and turned the experiment into a broader program capability.</p>
+        </div>
+      </div>
+
+      <div class="switcher reveal" style="--switcher-threshold: 48rem">
+        <article class="stage stack">
+          <span class="stage-num">1</span>
+          <h3 class="label">Understand</h3>
+          <p class="small">Give the model application context, not isolated snippets.</p>
+          <div class="stage-card stack" data-grow>
+            <div class="with-icon" style="--with-icon-align:center"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span><span class="small">Java estate</span></div>
+            <div class="with-icon" style="--with-icon-align:center"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span><span class="small">DB2 semantics</span></div>
+            <div class="with-icon" style="--with-icon-align:center"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 12h4l4-7h2M11 12l4 7h2"/></svg></span><span class="small">Dependencies</span></div>
+            <div class="with-icon" style="--with-icon-align:center"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 16l4-5 4 3 4-7"/></svg></span><span class="small">Migration rules</span></div>
+          </div>
+        </article>
+
+        <article class="stage stack">
+          <span class="stage-num">2</span>
+          <h3 class="label">Transform</h3>
+          <p class="small">Generate the target implementation using reusable migration patterns.</p>
+          <div class="stage-card stack" style="--stack-space: var(--space-xs)" data-grow>
+            <div class="cluster" style="--cluster-space: var(--space-2xs)">
+              <span class="mini-chip">Controller</span><span class="mini-chip">Context</span><span class="mini-chip">Rules</span>
+            </div>
+            <div class="transform-arrow"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="4" x2="12" y2="19"/><polyline points="6 13 12 19 18 13"/></svg></div>
+            <div class="llm-block" data-grow>AI-Accelerated Translation</div>
+            <span class="mini-chip">Postgres candidate</span>
+          </div>
+        </article>
+
+        <article class="stage stack">
+          <span class="stage-num">3</span>
+          <h3 class="label">Validate</h3>
+          <p class="small">Prove behavior before accepting the generated conversion.</p>
+          <div class="stage-card stack" style="--stack-space: var(--space-2xs)" data-grow>
+            <p class="rung">Compile</p><p class="rung">Unit</p><p class="rung">Integration</p>
+            <p class="rung">Behavior</p><p class="rung">Human acceptance</p>
+          </div>
+        </article>
+      </div>
+
+      <p class="thesis" data-style="italic">Understand the legacy. Transform with AI. Validate with rigor.</p>
     </div>
-    <div class="gov-cards reveal d2">
-      <article class="gov-card">
-        <div class="top"><div class="icon-disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></div><h3>Human accountability</h3></div>
-        <p>Engineers owned exceptions and production acceptance.</p>
-      </article>
-      <article class="gov-card">
-        <div class="top"><div class="icon-disc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Security &amp; compliance</h3></div>
-        <p>The approach operated within federal security, data-handling, FedRAMP, and regulated-environment constraints.</p>
-      </article>
-      <article class="gov-card">
-        <div class="top"><div class="icon-disc"><svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><h3>Release discipline</h3></div>
-        <p>AI acceleration still had to integrate into the existing SDLC, testing, source control, and release governance.</p>
-      </article>
+  </div>
+  <p class="scroll-cue">Scroll<span class="shaft" aria-hidden="true"></span></p>
+</section>
+
+<!-- ========== 04 PIVOT ================================================== -->
+<section class="chapter cover" id="pivot" aria-labelledby="pivot-t">
+  <div class="scene-art" aria-hidden="true">
+    <div class="wash"></div><div class="ridge"></div><div class="structure"></div><div class="halo"></div>
+  </div>
+  <div class="center chapter-inner" data-cover-centre>
+    <div class="stack" style="--stack-space: var(--space-xl)">
+
+      <div class="stack">
+        <p class="eyebrow reveal">04 / Pivot</p>
+        <h2 class="display" data-size="prose" id="pivot-t">Then integration testing changed the story.</h2>
+      </div>
+
+      <div class="switcher reveal" style="--switcher-threshold: 52rem">
+        <div class="stack" style="--stack-space: var(--space-2xs)">
+          <p class="kicker">What looked successful</p>
+          <p class="success-item">Generated <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></p>
+          <p class="success-item">Compiled <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></p>
+          <p class="success-item">Happy path <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></p>
+          <p class="success-item">&gt;90–95% first-pass quality <span class="check"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 12 9 17 20 6"/></svg></span></p>
+          <p class="small">Measured in controlled scenarios.</p>
+        </div>
+
+        <div class="not-equal">
+          <p class="symbol" aria-hidden="true">≠</p>
+          <p class="label">Behaviorally<br>equivalent</p>
+        </div>
+
+        <div class="stack" style="--stack-space: var(--space-2xs)">
+          <p class="kicker">What surfaced</p>
+          <div class="grid" style="--grid-min: 9rem; --grid-space: var(--space-2xs)">
+            <p class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Date handling</p>
+            <p class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/></svg></span>Null semantics</p>
+            <p class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg></span>String functions</p>
+            <p class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></svg></span>Stored procedures</p>
+            <p class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="7.9 2 16.1 2 22 7.9 22 16.1 16.1 22 7.9 22 2 16.1 2 7.9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>Negative paths</p>
+            <p class="surfaced"><span class="bullet-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 10 4 15 9 20"/><path d="M20 4v7a4 4 0 0 1-4 4H4"/></svg></span>Data-return behavior</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack reveal">
+        <p class="kicker">The pivot</p>
+        <div class="sidebar" style="--sidebar-width: 18rem; --sidebar-space: var(--space-s)">
+          <div class="flow-panel stack" style="--stack-space: var(--space-xs)">
+            <p class="kicker">Before</p>
+            <div class="cluster" style="--cluster-space: var(--space-2xs)">
+              <span class="flow-step">Generate</span>
+              <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step">Happy-path test</span></span>
+              <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step">Accept</span></span>
+            </div>
+          </div>
+
+          <div class="flow-panel stack" data-tone="after" style="--stack-space: var(--space-xs)">
+            <p class="kicker" style="color: var(--accent-ink)">After</p>
+            <div class="cluster" style="--cluster-space: var(--space-2xs)">
+              <span class="flow-step">Understand</span>
+              <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step">Generate</span></span>
+              <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step" data-tone="accent">Validation<br>harness</span></span>
+              <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step" data-tone="accent">Compare<br>behavior</span></span>
+              <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg>
+                <span class="human-review"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg>Review exceptions</span>
+              </span>
+              <span class="flow-item"><svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h14M13 6l6 6-6 6"/></svg><span class="flow-step">Promote</span></span>
+            </div>
+            <p class="loop-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-9.36L1 10"/></svg>
+              Harness, comparison and review repeat until behavior matches
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <p class="thesis">Generation wasn’t the hardest problem.<span>Proving behavioral equivalence was messier.</span></p>
     </div>
-    <div class="governance-thesis reveal d4"><span>AI became the accelerator.</span><span>Validation became the control plane.</span><span>Engineers retained the judgment.</span></div>
+  </div>
+  <p class="scroll-cue">Scroll<span class="shaft" aria-hidden="true"></span></p>
+</section>
+
+<!-- ========== 05 GOVERNANCE ============================================= -->
+<section class="chapter cover" id="governance" aria-labelledby="governance-t">
+  <div class="scene-art" aria-hidden="true">
+    <div class="wash"></div><div class="ridge"></div><div class="structure"></div><div class="halo"></div>
+  </div>
+  <div class="center chapter-inner" data-cover-centre>
+    <div class="stack" style="--stack-space: var(--space-xl)">
+
+      <div class="stack">
+        <p class="eyebrow reveal">05 / Governance</p>
+        <h2 class="display measure" data-size="prose" id="governance-t">Acceleration still had to operate inside federal-grade controls.</h2>
+        <p class="trust-label">Trust</p>
+      </div>
+
+      <div class="grid reveal" style="--grid-min: 17rem">
+        <article class="gov-card stack">
+          <span class="icon-disc"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg></span>
+          <h3 class="label">Human accountability</h3>
+          <p class="small">Engineers owned exceptions and production acceptance.</p>
+        </article>
+        <article class="gov-card stack">
+          <span class="icon-disc"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          <h3 class="label">Security &amp; compliance</h3>
+          <p class="small">The approach operated within federal security, data-handling, FedRAMP, and regulated-environment constraints.</p>
+        </article>
+        <article class="gov-card stack">
+          <span class="icon-disc"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+          <h3 class="label">Release discipline</h3>
+          <p class="small">AI acceleration still had to integrate into the existing SDLC, testing, source control, and release governance.</p>
+        </article>
+      </div>
+
+      <p class="thesis">AI became the accelerator.<span>Validation became the control plane.</span><span>Engineers retained the judgment.</span></p>
+    </div>
   </div>
 </section>
 
 </main>
+
 <footer class="site-foot">
-  <div class="foot-inner">
-    <div class="foot-mark">SB</div>
-    <div class="foot-note">Federal Benefits Modernization · AI-Accelerated Migration</div>
-    <div class="foot-note">Case study · 5 chapters</div>
+  <div class="center" style="--center-max: var(--max)">
+    <div class="cluster" style="--cluster-justify: space-between">
+      <span class="nav-mark">SB</span>
+      <span class="kicker">Federal Benefits Modernization · AI-Accelerated Migration</span>
+      <span class="kicker">Case study · 5 chapters</span>
+    </div>
   </div>
 </footer>
+
 <script>
 (() => {
-  const navLinks = [...document.querySelectorAll('.chapter-nav a')];
-  const sections = [...document.querySelectorAll('.chapter')];
-  const reveals = [...document.querySelectorAll('.reveal')];
+  const links = [...document.querySelectorAll('.nav-link')];
+  const byId = id => links.find(a => a.getAttribute('href') === '#' + id);
 
-  const revealObserver = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        obs.unobserve(entry.target);
+  document.querySelectorAll('.chapter').forEach(s => {
+    new IntersectionObserver(e => {
+      if (e[0].isIntersecting){
+        links.forEach(a => a.removeAttribute('aria-current'));
+        byId(s.id)?.setAttribute('aria-current','true');
       }
+    }, { threshold: .4 }).observe(s);
+  });
+
+  const ro = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target) }
     });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => revealObserver.observe(el));
-
-  const sectionObserver = new IntersectionObserver((entries) => {
-    const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if (!visible) return;
-    navLinks.forEach(a => a.classList.toggle('active', a.dataset.target === visible.target.id));
-  }, { threshold: [0.35, 0.5, 0.65] });
-  sections.forEach(s => sectionObserver.observe(s));
-
-  navLinks.forEach(a => a.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.getElementById(a.dataset.target);
-    if (!target) return;
-    target.scrollIntoView({behavior:'smooth', block:'start'});
-    history.replaceState(null, '', '#' + a.dataset.target);
-  }));
+  }, { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
 })();
 </script>
 </body>

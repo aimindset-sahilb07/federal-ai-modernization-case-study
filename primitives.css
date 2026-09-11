@@ -1,0 +1,203 @@
+/* ==========================================================================
+   PRIMITIVES — composable layout, after Every Layout (every-layout.dev).
+   Nine of them. Compose these instead of writing bespoke grid or flex.
+   Every knob is a custom property with a token default, so a layout can be
+   tuned without touching this file and without inventing a new value.
+   ========================================================================== */
+
+*,*::before,*::after{ box-sizing: border-box }
+
+/* --- 1. STACK ------------------------------------------------------------
+   Vertical rhythm. The ONLY thing that puts space between stacked blocks.
+   Margins (not gap) so nested stacks and one-off exceptions still work.
+
+   To make one child fill the leftover height, mark it [data-grow].
+   That replaces `height:100%`, which silently breaks inside a stretched
+   grid item.                                                             */
+
+.stack{ display:flex; flex-direction:column; justify-content:flex-start }
+.stack > *{ margin-block:0 }
+.stack > * + *{ margin-block-start: var(--stack-space, var(--space-s)) }
+.stack > [data-grow]{ flex-grow:1 }
+
+/* --- 2. CLUSTER ----------------------------------------------------------
+   Things that sit in a row and wrap gracefully: tags, nav links, buttons,
+   a step and its arrow. Never overflows.                                  */
+
+.cluster{
+  display:flex; flex-wrap:wrap;
+  gap: var(--cluster-space, var(--space-s));
+  align-items: var(--cluster-align, center);
+  justify-content: var(--cluster-justify, flex-start);
+}
+
+/* --- 3. SIDEBAR ----------------------------------------------------------
+   Two children. The first is the sidebar at --sidebar-width; the second
+   takes the rest and wraps underneath once it would go below
+   --sidebar-content-min. No breakpoint required.                          */
+
+.sidebar{ display:flex; flex-wrap:wrap; gap: var(--sidebar-space, var(--space-l)) }
+.sidebar > :first-child{ flex-basis: var(--sidebar-width, 20rem); flex-grow:1; min-inline-size:0 }
+.sidebar > :last-child{
+  flex-basis:0; flex-grow:999;
+  min-inline-size: var(--sidebar-content-min, 50%);
+}
+/* [data-side="end"] puts the narrow column LAST while keeping the main copy
+   first in the DOM, which is what reading order and screen readers want. */
+.sidebar[data-side="end"] > :first-child{
+  flex-basis:0; flex-grow:999; min-inline-size: var(--sidebar-content-min, 50%);
+}
+.sidebar[data-side="end"] > :last-child{
+  flex-basis: var(--sidebar-width, 20rem); flex-grow:1; min-inline-size:0;
+}
+
+/* Without this a long unbreakable word sets min-content and the flex item
+   refuses to shrink, which is the classic source of horizontal scroll.
+   Cluster is excluded on purpose: it wraps, so its children should keep
+   their natural width rather than being squeezed. */
+.sidebar > *, .switcher > *{ min-inline-size:0 }
+
+/* --- 4. SWITCHER ---------------------------------------------------------
+   N equal columns that switch to a single column all at once, when the
+   container (not the viewport) drops below --switcher-threshold.          */
+
+.switcher{ display:flex; flex-wrap:wrap; gap: var(--switcher-space, var(--space-l)) }
+.switcher > *{
+  flex-grow:1;
+  flex-basis: calc((var(--switcher-threshold, 40rem) - 100%) * 999);
+}
+
+/* --- 5. CENTER -----------------------------------------------------------
+   Horizontal centring plus the page gutter. content-box so --center-max
+   means the content width, not the padded width.                          */
+
+.center{
+  box-sizing: content-box;
+  margin-inline: auto;
+  max-inline-size: var(--center-max, var(--measure));
+  padding-inline: var(--gutter);
+}
+
+/* --- 6. COVER ------------------------------------------------------------
+   A full-height region with one principal child centred in it. Mark the
+   principal child [data-cover-centre].                                    */
+
+.cover{
+  display:flex; flex-direction:column;
+  min-block-size: var(--cover-min, 100svh);
+  padding-block: var(--cover-space, var(--space-l));
+}
+.cover > *{ margin-block: var(--cover-space, var(--space-l)) }
+.cover > :first-child:not([data-cover-centre]){ margin-block-start:0 }
+.cover > :last-child:not([data-cover-centre]){ margin-block-end:0 }
+.cover > [data-cover-centre]{ margin-block:auto }
+
+/* --- 7. FRAME ------------------------------------------------------------
+   Crops media to a ratio without letterboxing or overflow.                */
+
+.frame{
+  aspect-ratio: var(--frame-ratio, 16/9);
+  overflow:hidden; display:flex; align-items:center; justify-content:center;
+}
+.frame > img, .frame > video{
+  inline-size:100%; block-size:100%; object-fit:cover;
+}
+
+/* --- 8. GRID -------------------------------------------------------------
+   Auto-fitting cards. min() stops the track from exceeding the container
+   on narrow screens, which is the usual cause of horizontal scroll.       */
+
+.grid{
+  display:grid;
+  gap: var(--grid-space, var(--space-l));
+  grid-template-columns:
+    repeat(auto-fit, minmax(min(var(--grid-min, 20rem), 100%), 1fr));
+}
+
+/* --- 9. BOX --------------------------------------------------------------
+   The one card. Padding, border, radius and shadow all come from tokens,
+   so cards cannot drift apart.                                            */
+
+.box{
+  padding: var(--box-space, var(--space-m));
+  border: var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-2);
+}
+.box[data-plain]{ background:none; box-shadow:none }
+
+
+/* ==========================================================================
+   CONTRACTS — small rules that close the gaps primitives do not cover.
+   ========================================================================== */
+
+/* An icon beside text. No fixed grid track, so the track and the icon can
+   never disagree about their width. This replaces `grid-template-columns:
+   58px 1fr` next to a 62px icon.                                          */
+
+.with-icon{
+  display:flex;
+  align-items: var(--with-icon-align, flex-start);
+  gap: var(--with-icon-space, var(--space-s));
+}
+.with-icon > :first-child{ flex:0 0 auto }
+
+/* Icons are ALWAYS inline SVG on this contract. Never a text glyph, never
+   an emoji: those ignore stroke weight and render differently per OS.     */
+
+.icon{
+  inline-size: var(--icon-size, var(--icon-md));
+  block-size:  var(--icon-size, var(--icon-md));
+  flex:0 0 auto;
+  fill:none; stroke:currentColor;
+  stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round;
+}
+.icon-disc{
+  inline-size: var(--icon-disc); block-size: var(--icon-disc);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft); color: var(--accent);
+  display:grid; place-items:center; flex:0 0 auto;
+}
+
+/* A small icon in a soft disc, used inline in lists. Styles the child svg
+   directly so markup does not have to remember a second class.           */
+.bullet-icon{
+  inline-size: var(--icon-md); block-size: var(--icon-md);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft); color: var(--accent);
+  display:grid; place-items:center; flex:0 0 auto;
+}
+.bullet-icon > svg{
+  inline-size: var(--icon-sm); block-size: var(--icon-sm);
+  fill:none; stroke:currentColor;
+  stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;
+}
+/* Same safety net for the larger disc. */
+.icon-disc > svg{
+  inline-size: var(--icon-md); block-size: var(--icon-md);
+  fill:none; stroke:currentColor;
+  stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
+}
+
+/* Readable line length. Put on the element that holds the text. */
+.measure{ max-inline-size: var(--measure) }
+
+/* Screen-reader-only text. */
+.visually-hidden:not(:focus):not(:active){
+  clip-path: inset(50%); height:1px; width:1px;
+  overflow:hidden; position:absolute; white-space:nowrap;
+}
+
+/* Focus. One rule, everywhere, so it can never be missed on a component. */
+:where(a,button,summary,[tabindex]):focus-visible{
+  outline:2px solid var(--accent); outline-offset:3px; border-radius:3px;
+}
+
+/* Reveal on scroll. Content is visible by default and only hidden once JS
+   confirms it can un-hide it, so a JS failure can never blank the page.   */
+.js .reveal{
+  opacity:0; transform: translateY(var(--space-xs));
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.js .reveal.in{ opacity:1; transform:none }
